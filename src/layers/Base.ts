@@ -22,4 +22,5 @@ export abstract class BaseLayer {
   public mouseMove?(e: MouseEvent): void;
   public mouseDown?(e: MouseEvent): void;
   public mouseUp?(e: MouseEvent): void;
+  public mouseWheel?(e: WheelEvent): void;
 }
