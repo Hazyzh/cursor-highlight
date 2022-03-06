@@ -1,8 +1,9 @@
 import { BaseLayer } from './Base';
+import { IPointPosition } from './Base.interface';
 
 export class BackgroundLayer extends BaseLayer{
   fillStyle: string = '#3E5463';
-  cursorPosition?: {x: number, y: number};
+  cursorPosition?: IPointPosition;
   radius: number = 200;
 
   mouseMove(e: MouseEvent) {

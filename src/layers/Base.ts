@@ -1,4 +1,4 @@
-import { BaseLayerProps } from './Base.interface';
+import { IBaseLayerProps } from './Base.interface';
 
 export abstract class BaseLayer {
   public canvas: HTMLCanvasElement;
@@ -11,7 +11,7 @@ export abstract class BaseLayer {
     ctx,
     cHeight,
     cWidth,
-  }: BaseLayerProps) {
+  }: IBaseLayerProps) {
     this.canvas = canvas;
     this.ctx = ctx;
     this.cHeight = cHeight;
@@ -20,4 +20,6 @@ export abstract class BaseLayer {
 
   public abstract draw(): void;
   public mouseMove?(e: MouseEvent): void;
+  public mouseDown?(e: MouseEvent): void;
+  public mouseUp?(e: MouseEvent): void;
 }

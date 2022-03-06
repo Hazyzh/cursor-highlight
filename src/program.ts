@@ -4,7 +4,7 @@ import {
   PaintingLayer,
 } from './layers';
 
-interface MainParams {
+interface IMainParams {
   canvas: HTMLCanvasElement;
 }
 
@@ -18,11 +18,9 @@ export class Main {
   private layers: BaseLayer[];
   private working: boolean = false;
 
-
-
   constructor({
     canvas
-  }: MainParams) {
+  }: IMainParams) {
     this.canvas = canvas;
     this.ctx = this.canvas.getContext('2d')!;
     this.cHeight = window.innerHeight;
@@ -34,7 +32,7 @@ export class Main {
   }
 
   public init() {
-    this.working = false;
+    this.working = true;
     this.ctx.canvas.width = this.cWidth;
     this.ctx.canvas.height = this.cHeight
     this.draw();
@@ -51,7 +49,17 @@ export class Main {
   private initListeners() {
     this.canvas.addEventListener('mousemove', e => {
       this.layers.forEach(layer => layer.mouseMove?.(e))
-    })
+    });
+    this.canvas.addEventListener('mousedown', e => {
+      this.layers.forEach(layer => layer.mouseDown?.(e))
+    });
+    this.canvas.addEventListener('mouseup', e => {
+      this.layers.forEach(layer => layer.mouseUp?.(e))
+    });
+  }
+
+  get renderLayers() {
+    return this.layers.reduce((pre, item) => ({...pre, [item.constructor.name.toLowerCase()]: item}), {});
   }
 }
 
