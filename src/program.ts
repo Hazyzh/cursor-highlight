@@ -40,7 +40,11 @@ export class Main {
   }
 
   private draw = () => {
-    this.layers.forEach(layer => layer.draw());
+    this.layers.forEach(layer => {
+      this.ctx.save()
+      layer.draw();
+      this.ctx.restore();
+    });
     if (this.working) {
       window.requestAnimationFrame(this.draw);
     }
@@ -63,6 +67,20 @@ export class Main {
       e.preventDefault();
       this.layers.forEach(layer => layer.mouseWheel?.(e))
     })
+
+    window.addEventListener('keydown', e => this.checkExit(e))
+  }
+
+  checkExit(e: KeyboardEvent){
+    if (e.code === 'Escape') {
+      this.working = !this.working;
+      if (this.working) this.draw();
+    }
+  }
+
+  clean() {
+    const { cWidth, cHeight } = this;
+    this.ctx.clearRect(0, 0, cWidth, cHeight);
   }
 
   get renderLayers() {

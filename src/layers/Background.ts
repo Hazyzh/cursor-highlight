@@ -8,6 +8,7 @@ export class BackgroundLayer extends BaseLayer{
   minRadius = 20;
   maxRadius = 500;
 
+  private apertureStyle = '#fff';
 
   mouseMove(e: MouseEvent) {
     this.cursorPosition = { x: e.offsetX, y: e.offsetY };
@@ -20,22 +21,43 @@ export class BackgroundLayer extends BaseLayer{
   }
 
   public draw() {
-    const { cursorPosition, ctx, radius, fillStyle, cHeight, cWidth } = this;
+    this.drawBackground();
+    this.drawAperture();
+    this.drawCursorHighlight();
+  }
+
+  private drawBackground() {
+    const { ctx, fillStyle, cHeight, cWidth } = this;
     ctx.fillStyle = fillStyle;
     ctx.fillRect(0, 0, cWidth, cHeight);
+  }
 
-    if(cursorPosition) {
+  private drawCursorHighlight() {
+    const { ctx, cursorPosition, radius } = this;
+    if (!cursorPosition) return
+
+    const { x, y } = cursorPosition;
+    const offset = radius / 2;
+    const centerX = Math.max(0, x - offset);
+    const centerY = Math.max(0, y - offset);
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(x, y, radius / 2, 0, Math.PI * 2, false);
+    ctx.clip();
+    ctx.clearRect(centerX, centerY, radius, radius);
+    ctx.restore();
+  }
+
+  private drawAperture() {
+      const { ctx, cursorPosition, radius } = this;
+      if (!cursorPosition) return
+
       const { x, y } = cursorPosition;
-      const offset = radius / 2;
-      const centerX = Math.max(0, x - offset);
-      const centerY = Math.max(0, y - offset);
-  
-      ctx.save();
       ctx.beginPath();
-      ctx.arc(x, y, radius / 2, 0, Math.PI * 2, false);
-      ctx.clip();
-      ctx.clearRect(centerX, centerY, radius, radius);
-      ctx.restore();
-    }
+      ctx.lineWidth = 2;
+      ctx.arc(x, y, radius / 2 + 5, 0, Math.PI * 2, false);
+      ctx.strokeStyle = this.apertureStyle;
+      ctx.stroke();
   }
 }
