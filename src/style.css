@@ -5,20 +5,10 @@ html,body {
   margin: 0;
 }
 
-#mouse-highlight {
+#cursor-highlight {
+  position: absolute;
   top: 0;
   border: 1px solid black;
   box-sizing: border-box;
-  position: absolute;
-}
-
-.tool-bar {
-  /* position: absolute; */
-  height: 100%;
-  /* background: gray; */
-}
-
-.tool-bar button {
-  position: absolute;
-  z-index: 10;
+  opacity: 0.7;
 }

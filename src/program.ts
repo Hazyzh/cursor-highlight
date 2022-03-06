@@ -31,22 +31,27 @@ export class Main {
       (LayerClass) => 
         new LayerClass({ canvas: this.canvas, ctx: this.ctx, cHeight: this.cHeight, cWidth: this.cWidth })
     );
-    this.init();
   }
 
-  private init() {
-    // this.working = true;
+  public init() {
+    this.working = false;
     this.ctx.canvas.width = this.cWidth;
     this.ctx.canvas.height = this.cHeight
     this.draw();
+    this.initListeners();
   }
 
   private draw = () => {
-    console.log('123');
     this.layers.forEach(layer => layer.draw());
     if (this.working) {
       window.requestAnimationFrame(this.draw);
     }
+  }
+
+  private initListeners() {
+    this.canvas.addEventListener('mousemove', e => {
+      this.layers.forEach(layer => layer.mouseMove?.(e))
+    })
   }
 }
 

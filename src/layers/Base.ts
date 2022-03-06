@@ -19,4 +19,5 @@ export abstract class BaseLayer {
   }
 
   public abstract draw(): void;
+  public mouseMove?(e: MouseEvent): void;
 }
