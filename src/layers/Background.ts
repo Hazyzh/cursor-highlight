@@ -2,13 +2,18 @@ import { BaseLayer } from './Base';
 import { IPointPosition } from './Base.interface';
 
 export class BackgroundLayer extends BaseLayer{
-  fillStyle = '#3E5463';
-  cursorPosition?: IPointPosition;
-  radius = 200;
+  fillStyle = '#445760';
+  cursorPosition?: IPointPosition = { x: 300, y: 300 };
+  radius = 100;
   minRadius = 20;
-  maxRadius = 500;
+  maxRadius = 300;
 
-  private apertureStyle = '#fff';
+  private apertureColors = [
+    'cyan', '#b3ff88', '#e9ff50', '#ff5050', '#0bf57b', '#fff',
+  ];
+  private apertureTransparency = 0.6;
+  private apertureTheta = 0;
+  private apertureRotateSpeed = 1;
 
   mouseMove(e: MouseEvent) {
     this.cursorPosition = { x: e.offsetX, y: e.offsetY };
@@ -28,8 +33,12 @@ export class BackgroundLayer extends BaseLayer{
 
   private drawBackground() {
     const { ctx, fillStyle, cHeight, cWidth } = this;
+    ctx.save();
     ctx.fillStyle = fillStyle;
+    ctx.globalAlpha = 0.7;
+    ctx.clearRect(0, 0, cWidth, cHeight);
     ctx.fillRect(0, 0, cWidth, cHeight);
+    ctx.restore();
   }
 
   private drawCursorHighlight() {
@@ -37,27 +46,40 @@ export class BackgroundLayer extends BaseLayer{
     if (!cursorPosition) return
 
     const { x, y } = cursorPosition;
-    const offset = radius / 2;
-    const centerX = Math.max(0, x - offset);
-    const centerY = Math.max(0, y - offset);
+    const centerX = Math.max(0, x - radius);
+    const centerY = Math.max(0, y - radius);
 
     ctx.save();
     ctx.beginPath();
-    ctx.arc(x, y, radius / 2, 0, Math.PI * 2, false);
+    ctx.arc(x, y, radius, 0, Math.PI * 2, false);
     ctx.clip();
-    ctx.clearRect(centerX, centerY, radius, radius);
+    ctx.clearRect(centerX, centerY, radius * 2, radius * 2);
     ctx.restore();
   }
 
   private drawAperture() {
-      const { ctx, cursorPosition, radius } = this;
+      const { ctx, cursorPosition, radius, apertureColors, apertureTheta, apertureRotateSpeed } = this;
       if (!cursorPosition) return
 
+      const apertureWidth = radius / 30;
+      this.apertureTheta = (this.apertureTheta + apertureRotateSpeed) % 360;
       const { x, y } = cursorPosition;
+      ctx.save();
       ctx.beginPath();
-      ctx.lineWidth = 2;
-      ctx.arc(x, y, radius / 2 + 5, 0, Math.PI * 2, false);
-      ctx.strokeStyle = this.apertureStyle;
+      ctx.lineWidth = apertureWidth;
+      const gradient = ctx.createLinearGradient(x - radius, y - radius, x + radius, y + radius);
+      const colorsLength = apertureColors.length;
+      apertureColors.forEach((color, index) => {
+        gradient.addColorStop((index + 1) / colorsLength, color);
+      });
+      ctx.arc(x, y, radius + apertureWidth / 2, 0, Math.PI * 2, false);
+      ctx.translate(x, y);
+      ctx.rotate(apertureTheta * Math.PI / 180);
+      ctx.translate(x * -1, y * -1);
+      ctx.globalAlpha = this.apertureTransparency;
+      ctx.strokeStyle = gradient;
       ctx.stroke();
+      ctx.closePath();
+      ctx.restore();
   }
 }

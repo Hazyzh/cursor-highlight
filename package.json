@@ -2,13 +2,18 @@
   "name": "cursor-highlight",
   "private": true,
   "version": "0.0.0",
+  "main": "main.js",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "vite build && electron ."
   },
   "devDependencies": {
     "typescript": "^4.5.4",
     "vite": "^2.8.0"
+  },
+  "dependencies": {
+    "electron": "^17.1.1"
   }
 }

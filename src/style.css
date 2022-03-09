@@ -4,11 +4,3 @@ html,body {
   overflow: hidden;
   margin: 0;
 }
-
-#cursor-highlight {
-  position: absolute;
-  top: 0;
-  border: 1px solid black;
-  box-sizing: border-box;
-  opacity: 0.7;
-}
