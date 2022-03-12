@@ -14,6 +14,7 @@ export class BackgroundLayer extends BaseLayer{
   private apertureTransparency = 0.6;
   private apertureTheta = 0;
   private apertureRotateSpeed = 1;
+  private minApertureWidth = 3;
 
   mouseMove(e: MouseEvent) {
     this.cursorPosition = { x: e.offsetX, y: e.offsetY };
@@ -58,10 +59,10 @@ export class BackgroundLayer extends BaseLayer{
   }
 
   private drawAperture() {
-      const { ctx, cursorPosition, radius, apertureColors, apertureTheta, apertureRotateSpeed } = this;
+      const { ctx, cursorPosition, radius, apertureColors, apertureTheta, apertureRotateSpeed, minApertureWidth } = this;
       if (!cursorPosition) return
 
-      const apertureWidth = radius / 30;
+      const apertureWidth = Math.max(radius / 30, minApertureWidth);
       this.apertureTheta = (this.apertureTheta + apertureRotateSpeed) % 360;
       const { x, y } = cursorPosition;
       ctx.save();

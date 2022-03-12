@@ -1,25 +1,35 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow} = require('electron');
+const { globalShortcut } = require('electron/main');
 const path = require('path')
 
-function createWindow () {
+let highlightWindow = null;
 
+function createHighlightWindow () {
+  if (highlightWindow) {
+    return;
+  }
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  highlightWindow = new BrowserWindow({
     // resizable: false,
     // fullscreen: true,
     transparent: true,
     frame:false
   })
 
-  mainWindow.maximize()
-  mainWindow.resizable = false;
-  mainWindow.show()
+  highlightWindow.maximize()
+  highlightWindow.resizable = false;
+  highlightWindow.show()
   // and load the index.html of the app.
-  mainWindow.loadFile('dist/index.html')
+  highlightWindow.loadFile('dist/index.html')
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  // highlightWindow.webContents.openDevTools()
+
+  highlightWindow.on('closed', () => {
+    console.log('closed');
+    highlightWindow = null;
+  })
 }
 
 app.disableHardwareAcceleration();
@@ -27,13 +37,20 @@ app.disableHardwareAcceleration();
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-  createWindow()
+  createHighlightWindow()
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+    if (BrowserWindow.getAllWindows().length === 0) createHighlightWindow()
   })
+  globalShortcut.register('Cmd+Ctrl+z', () => createHighlightWindow());
+  globalShortcut.register('Esc', () => {
+    if (highlightWindow) {
+      highlightWindow.close();
+      highlightWindow = null;
+    }
+  });
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
