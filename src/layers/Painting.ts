@@ -1,44 +1,40 @@
 import { BaseLayer } from './Base';
 import { IPointPosition } from './Base.interface';
 
-interface ILineItem {
-  start: IPointPosition;
-  end: IPointPosition;
-}
 export class PaintingLayer extends BaseLayer {
   private strokeStyle = 'red';
-  private lineWidth = 10;
+  private lineWidth = 5;
   private isDrawing = false;
-  private lines: ILineItem[] = [];
-  private startPosition: IPointPosition = { x: 0, y: 0 };
+  private lines: IPointPosition[][] = [];
+  private activeLines: IPointPosition[] = [];
   private paintingKey = 0;
 
   public draw() {
-    const { lines, ctx, strokeStyle, lineWidth } = this;
-    if (!lines.length) return;
+    const { activeLines, lines, ctx, strokeStyle, lineWidth } = this;
+    if (!lines.length && !activeLines.length) return;
 
     ctx.strokeStyle = strokeStyle;
     ctx.lineWidth = lineWidth;
     lines.forEach(line => this.drawLine(line));
+    this.drawLine(activeLines);
   }
 
   mouseMove(e: MouseEvent) {
     if (!this.isDrawing) return;
 
     const currentPosition = {x: e.offsetX, y: e.offsetY};
-    const lineItem: ILineItem = {
-      start: this.startPosition,
-      end: currentPosition,
-    }
-    this.startPosition = currentPosition;
-    this.lines.push(lineItem);
+    this.activeLines.push(currentPosition);
   }
 
   mouseDown(e: MouseEvent) {
     if (e.button !== this.paintingKey) return;
 
     this.isDrawing = true;
-    this.startPosition = {x: e.offsetX, y: e.offsetY};
+    if (this.activeLines.length > 1) {
+      this.lines.push(this.activeLines);
+    }
+
+    this.activeLines = [];
   }
 
   mouseUp(e: MouseEvent) {
@@ -48,12 +44,16 @@ export class PaintingLayer extends BaseLayer {
     // this.lines = [];
   }
 
-  drawLine(line: ILineItem) {
-    const { start, end } = line;
+  drawLine(line: IPointPosition[]) {
     const { ctx } =  this;
     ctx.beginPath();
-    ctx.moveTo(start.x, start.y);
-    ctx.lineTo(end.x, end.y);
+    line.forEach(({x, y}, index) => {
+      if (index === 0) {
+        ctx.moveTo(x, y);
+      } else {
+       ctx.lineTo(x, y);
+      }
+    })
     ctx.stroke();
     ctx.closePath();
   }
