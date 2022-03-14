@@ -3,7 +3,11 @@ const {app, BrowserWindow} = require('electron');
 const { globalShortcut } = require('electron/main');
 const path = require('path')
 
+const isDev = process.env.IS_DEV == "true" ? true : false;
+
 let highlightWindow = null;
+// gray mask
+app.disableHardwareAcceleration();
 
 function createHighlightWindow () {
   if (highlightWindow) {
@@ -14,17 +18,24 @@ function createHighlightWindow () {
     // resizable: false,
     // fullscreen: true,
     transparent: true,
-    frame:false
+    frame:false,
+    webPreferences: { webSecurity: false },
+    allowRunningInsecureContent: true,
   })
 
-  highlightWindow.maximize()
+  // highlightWindow.maximize()
   highlightWindow.resizable = false;
   highlightWindow.show()
+  highlightWindow.setAlwaysOnTop(true, 'screen-saver');
   // and load the index.html of the app.
-  highlightWindow.loadFile('dist/index.html')
+  highlightWindow.loadURL(isDev
+    ? 'http://localhost:3000'
+    : `file://${path.join(__dirname, '../dist/index.html')}`)
 
   // Open the DevTools.
-  // highlightWindow.webContents.openDevTools()
+  if (isDev) {
+    highlightWindow.webContents.openDevTools();
+  }
 
   highlightWindow.on('closed', () => {
     console.log('closed');
@@ -32,7 +43,6 @@ function createHighlightWindow () {
   })
 }
 
-app.disableHardwareAcceleration();
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.

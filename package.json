@@ -2,16 +2,25 @@
   "name": "cursor-highlight",
   "private": true,
   "version": "0.0.0",
-  "main": "main.js",
+  "main": "electron/main.js",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "start": "vite build && electron ."
+    "start": "concurrently -k \"cross-env BROWSER=none yarn dev\" \"yarn electron\"",
+    "electron": "wait-on tcp:3000 && cross-env IS_DEV=true electron .",
+    "electron:pack": "electron-builder --dir",
+    "electron:builder": "electron-builder",
+    "build:for:electron": "cross-env ELECTRON=true vite build",
+    "app:build": "yarn build:for:electron && yarn electron:builder"
   },
   "devDependencies": {
+    "concurrently": "^7.0.0",
+    "cross-env": "^7.0.3",
+    "electron-builder": "^22.14.13",
     "typescript": "^4.5.4",
-    "vite": "^2.8.0"
+    "vite": "^2.8.0",
+    "wait-on": "^6.0.1"
   },
   "dependencies": {
     "electron": "^17.1.2"
