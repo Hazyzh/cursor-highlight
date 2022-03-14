@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron');
+const { app, BrowserWindow } = require('electron');
 const { globalShortcut } = require('electron/main');
 const path = require('path')
 
@@ -19,11 +19,13 @@ function createHighlightWindow () {
     // fullscreen: true,
     transparent: true,
     frame:false,
-    webPreferences: { webSecurity: false },
+    webPreferences: { 
+      preload: __dirname + '/preload.js',
+     },
     allowRunningInsecureContent: true,
   })
 
-  // highlightWindow.maximize()
+  highlightWindow.maximize()
   highlightWindow.resizable = false;
   highlightWindow.show()
   highlightWindow.setAlwaysOnTop(true, 'screen-saver');
@@ -33,9 +35,9 @@ function createHighlightWindow () {
     : `file://${path.join(__dirname, '../dist/index.html')}`)
 
   // Open the DevTools.
-  if (isDev) {
-    highlightWindow.webContents.openDevTools();
-  }
+  // if (isDev) {
+  //   highlightWindow.webContents.openDevTools();
+  // }
 
   highlightWindow.on('closed', () => {
     console.log('closed');
