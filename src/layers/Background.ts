@@ -16,6 +16,11 @@ export class BackgroundLayer extends BaseLayer{
   private apertureRotateSpeed = 1;
   private minApertureWidth = 3;
 
+  public init() {
+    this.canvas.addEventListener('mousemove', this.mouseMove);
+    this.canvas.addEventListener('wheel', this.mouseWheel);
+  }
+
   mouseMove(e: MouseEvent) {
     this.cursorPosition = { x: e.offsetX, y: e.offsetY };
   }

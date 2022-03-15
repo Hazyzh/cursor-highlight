@@ -9,6 +9,12 @@ export class PaintingLayer extends BaseLayer {
   private activeLines: IPointPosition[] = [];
   private paintingKey = 0;
 
+  public init(): void {
+    this.canvas.addEventListener('mousemove', this.mouseMove);
+    this.canvas.addEventListener('mousedown', this.mouseDown);
+    this.canvas.addEventListener('mouseup', this.mouseUp);
+  }
+
   public draw() {
     const { activeLines, lines, ctx, strokeStyle, lineWidth } = this;
     if (!lines.length && !activeLines.length) return;

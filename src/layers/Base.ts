@@ -16,11 +16,9 @@ export abstract class BaseLayer {
     this.ctx = ctx;
     this.cHeight = cHeight;
     this.cWidth = cWidth;
+    this.init();
   }
 
   public abstract draw(): void;
-  public mouseMove?(e: MouseEvent): void;
-  public mouseDown?(e: MouseEvent): void;
-  public mouseUp?(e: MouseEvent): void;
-  public mouseWheel?(e: WheelEvent): void;
+  public abstract init(): void;
 }

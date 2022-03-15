@@ -2,6 +2,7 @@ import {
   BackgroundLayer,
   BaseLayer,
   PaintingLayer,
+  PastingContent,
 } from './layers';
 
 interface IMainParams {
@@ -14,7 +15,7 @@ export class Main {
   private cWidth: number;
   private cHeight: number;
 
-  private layersClasses = [ BackgroundLayer, PaintingLayer ];
+  private layersClasses = [ BackgroundLayer, PastingContent, PaintingLayer ];
   private layers: BaseLayer[];
   private working: boolean = false;
 
