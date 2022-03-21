@@ -13,21 +13,28 @@ function createHighlightWindow () {
   if (highlightWindow) {
     return;
   }
+
+  const { screen } = require('electron');
+  const cursor = screen.getCursorScreenPoint();
+  const distScreen = screen.getDisplayNearestPoint(cursor);
+  const { bounds:  { x, y } } = distScreen; 
   // Create the browser window.
   highlightWindow = new BrowserWindow({
     // resizable: false,
     // fullscreen: true,
+    offscreen: true,
     transparent: true,
     frame:false,
     webPreferences: { 
       preload: __dirname + '/preload.js',
      },
     allowRunningInsecureContent: true,
+    // screen: displays[1],
   })
-
-  highlightWindow.maximize()
+  highlightWindow.setPosition(x, y)
+  highlightWindow.maximize();
   highlightWindow.resizable = false;
-  highlightWindow.show()
+  highlightWindow.show();
   highlightWindow.setAlwaysOnTop(true, 'screen-saver');
   // and load the index.html of the app.
   highlightWindow.loadURL(isDev
