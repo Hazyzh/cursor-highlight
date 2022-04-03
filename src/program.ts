@@ -52,23 +52,6 @@ export class Main {
   }
 
   private initListeners() {
-    this.canvas.addEventListener('mousemove', e => {
-      e.preventDefault();
-      this.layers.forEach(layer => layer.mouseMove?.(e))
-    });
-    this.canvas.addEventListener('mousedown', e => {
-      e.preventDefault();
-      this.layers.forEach(layer => layer.mouseDown?.(e))
-    });
-    this.canvas.addEventListener('mouseup', e => {
-      e.preventDefault();
-      this.layers.forEach(layer => layer.mouseUp?.(e))
-    });
-    this.canvas.addEventListener('wheel', e => {
-      e.preventDefault();
-      this.layers.forEach(layer => layer.mouseWheel?.(e))
-    })
-
     window.addEventListener('keydown', e => this.checkExit(e))
   }
 

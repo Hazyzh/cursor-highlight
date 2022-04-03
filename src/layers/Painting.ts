@@ -10,9 +10,9 @@ export class PaintingLayer extends BaseLayer {
   private paintingKey = 0;
 
   public init(): void {
-    this.canvas.addEventListener('mousemove', this.mouseMove);
-    this.canvas.addEventListener('mousedown', this.mouseDown);
-    this.canvas.addEventListener('mouseup', this.mouseUp);
+    this.canvas.addEventListener('mousemove', e => this.mouseMove(e));
+    this.canvas.addEventListener('mousedown', e => this.mouseDown(e));
+    this.canvas.addEventListener('mouseup', e => this.mouseUp(e));
   }
 
   public draw() {

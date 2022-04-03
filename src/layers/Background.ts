@@ -17,8 +17,8 @@ export class BackgroundLayer extends BaseLayer{
   private minApertureWidth = 3;
 
   public init() {
-    this.canvas.addEventListener('mousemove', this.mouseMove);
-    this.canvas.addEventListener('wheel', this.mouseWheel);
+    this.canvas.addEventListener('mousemove',e =>  this.mouseMove(e));
+    this.canvas.addEventListener('wheel', e => this.mouseWheel(e));
   }
 
   mouseMove(e: MouseEvent) {
