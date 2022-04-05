@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, Tray, nativeImage, Menu } = require('electron');
 const { globalShortcut } = require('electron/main');
 const path = require('path')
 
@@ -47,9 +47,26 @@ function createHighlightWindow () {
   // }
 
   highlightWindow.on('closed', () => {
-    console.log('closed');
     highlightWindow = null;
   })
+}
+
+let tray = null;
+function createTray() {
+  if (!!tray) return;
+
+  app.dock.hide();
+
+  const iconPath = path.join(__dirname, '../favicon.png');
+  const trayIcon = nativeImage.createFromPath(iconPath);
+  tray = new Tray(trayIcon.resize({width: 16}));
+  const contextMenu = Menu.buildFromTemplate([
+    { label: 'Highlight Mode', click: () => createHighlightWindow()},
+    { type: 'separator'},
+    { label: 'Quit', click: () => app.quit() }
+  ]);
+  tray.setToolTip('Cursor Highlight');
+  tray.setContextMenu(contextMenu);
 }
 
 // This method will be called when Electron has finished
@@ -63,13 +80,15 @@ app.whenReady().then(() => {
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createHighlightWindow()
   })
-  globalShortcut.register('Cmd+Ctrl+z', () => createHighlightWindow());
+  globalShortcut.register('Alt+x', () => createHighlightWindow());
   globalShortcut.register('Esc', () => {
     if (highlightWindow) {
       highlightWindow.close();
       highlightWindow = null;
     }
   });
+
+  createTray();
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
