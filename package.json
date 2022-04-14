@@ -1,11 +1,13 @@
 {
   "name": "cursor-highlight",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "main": "electron/main.js",
+  "author": "Harry Hou <hazyzh@qq.com>",
+  "description": "",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "start": "concurrently -k \"cross-env BROWSER=none yarn dev\" \"yarn electron\"",
     "electron": "wait-on tcp:3000 && cross-env IS_DEV=true electron .",
@@ -18,11 +20,17 @@
     "concurrently": "^7.0.0",
     "cross-env": "^7.0.3",
     "electron-builder": "^22.14.13",
-    "typescript": "^4.5.4",
+    "typescript": "^4.6.3",
     "vite": "^2.8.0",
-    "wait-on": "^6.0.1"
-  },
-  "dependencies": {
+    "wait-on": "^6.0.1",
     "electron": "^17.1.2"
+  },
+  "build": {
+    "productName": "Cursor Highlight",
+    "directories": { "output": "build" },
+    "copyright": "Copyright © 2022 Harry Hou",
+    "mac": {
+      "category": "Utilities"
+    }
   }
 }

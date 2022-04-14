@@ -9,6 +9,11 @@ let highlightWindow = null;
 // gray mask
 app.disableHardwareAcceleration();
 
+app.setLoginItemSettings({
+  openAtLogin: true,
+  openAsHidden: true,
+})
+
 function createHighlightWindow () {
   if (highlightWindow) {
     return;
@@ -88,14 +93,15 @@ app.whenReady().then(() => {
     }
   });
 
-  createTray();
-})
+  // Quit when all windows are closed, except on macOS. There, it's common
+  // for applications and their menu bar to stay active until the user quits
+  // explicitly with Cmd + Q.
+  app.on('window-all-closed', function () {
+    if (process.platform !== 'darwin') app.quit()
+  })
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
-app.on('window-all-closed', function () {
-  if (process.platform !== 'darwin') app.quit()
+
+  createTray();
 })
 
 // In this file you can include the rest of your app's specific main process
