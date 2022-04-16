@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "main": "electron/main.js",
   "author": "Harry Hou <hazyzh@qq.com>",
-  "description": "",
+  "description": "This is a utility tool let other guys easily focus on your mouse cursor. Especially effective when you share screen in a meeting session.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -26,6 +26,7 @@
     "electron": "^17.1.2"
   },
   "build": {
+    "appId": "github.com.hazyzh",
     "productName": "Cursor Highlight",
     "directories": { "output": "build" },
     "copyright": "Copyright © 2022 Harry Hou",

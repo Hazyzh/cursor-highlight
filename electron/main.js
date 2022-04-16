@@ -62,7 +62,7 @@ function createTray() {
 
   app.dock.hide();
 
-  const iconPath = path.join(__dirname, '../favicon.png');
+  const iconPath = path.join(__dirname, './trayIcon.png');
   const trayIcon = nativeImage.createFromPath(iconPath);
   tray = new Tray(trayIcon.resize({width: 16}));
   const contextMenu = Menu.buildFromTemplate([
