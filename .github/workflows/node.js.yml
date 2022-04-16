@@ -15,20 +15,20 @@ jobs:
         os: [macos-latest, ubuntu-latest, windows-latest]
 
     steps:
+      - name: Checkout Tag
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      
+      - name: Setup Node
+        uses: actions/setup-node@v3.1.1
         with:
-          node-version: 16
-          registry-url: https://registry.npmjs.org/
-      # install yarn
-      - name: Add yarn
-        uses: Borales/actions-yarn@v2.3.0
-        with:
-          cmd: install
+          node-version: v14.17.3
+      - name: yarn install
+        run: |
+          npm install yarn
+          yarn install
+          
       # build
       - name: build and release
-        uses: Borales/actions-yarn@v2.3.0
-        with:
-          cmd: build:for:github:ci
+        run: yarn build:for:github:ci
         env:
           GH_TOKEN: ${{ secrets.github_token }}
