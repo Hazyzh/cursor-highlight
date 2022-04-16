@@ -7,9 +7,9 @@ on:
 
 jobs:
   release:
-    
+
     runs-on: ${{ matrix.os }}
-    
+
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
@@ -17,18 +17,16 @@ jobs:
     steps:
       - name: Checkout Tag
       - uses: actions/checkout@v2
-      
+
       - name: Setup Node
         uses: actions/setup-node@v3.1.1
         with:
           node-version: v14.17.3
-      - name: yarn install
-        run: |
-          npm install yarn
-          yarn install
-          
+      - run: npm install yarn -g
+      - run: yarn install
+
       # build
-      - name: build and release
+      - name: Build And Release
         run: yarn build:for:github:ci
         env:
           GH_TOKEN: ${{ secrets.github_token }}
