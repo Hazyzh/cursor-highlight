@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, Tray, nativeImage, Menu } = require('electron');
+const { app, BrowserWindow, Tray, nativeImage, Menu, shell } = require('electron');
 const { globalShortcut } = require('electron/main');
 const path = require('path')
 
@@ -14,7 +14,23 @@ app.setLoginItemSettings({
   openAsHidden: true,
 })
 
+const MacOS = 'darwin';
+const Windows = 'win32';
+
+
+const hideTaskBar = () => {
+  switch(process.platform) {
+    case MacOS:
+      app.dock.hide();
+      return;
+    default:
+      return;
+  }
+}
+
 function createHighlightWindow () {
+  hideTaskBar();
+
   if (highlightWindow) {
     return;
   }
@@ -30,11 +46,11 @@ function createHighlightWindow () {
     offscreen: true,
     transparent: true,
     frame:false,
+    skipTaskbar: true,
     webPreferences: { 
       preload: __dirname + '/preload.js',
      },
     allowRunningInsecureContent: true,
-    // screen: displays[1],
   })
   highlightWindow.setPosition(x, y)
   highlightWindow.maximize();
@@ -60,15 +76,16 @@ let tray = null;
 function createTray() {
   if (!!tray) return;
 
-  app.dock.hide();
-
+  hideTaskBar();
   const iconPath = path.join(__dirname, './trayIcon.png');
   const trayIcon = nativeImage.createFromPath(iconPath);
   tray = new Tray(trayIcon.resize({width: 16}));
   const contextMenu = Menu.buildFromTemplate([
     { label: 'Highlight Mode', click: () => createHighlightWindow()},
     { type: 'separator'},
-    { label: 'Quit', click: () => app.quit() }
+    { label: 'Help', click: () => shell.openExternal('https://github.com/Hazyzh/cursor-highlight')},
+    { type: 'separator'},
+    { label: 'Quit App', click: () => app.quit() }
   ]);
   tray.setToolTip('Cursor Highlight');
   tray.setContextMenu(contextMenu);

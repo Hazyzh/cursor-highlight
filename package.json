@@ -28,10 +28,14 @@
   "build": {
     "appId": "github.com.hazyzh",
     "productName": "Cursor Highlight",
-    "directories": { "output": "build" },
+    "directories": { "output": "app_output" },
     "copyright": "Copyright © 2022 Harry Hou",
     "mac": {
-      "category": "Utilities"
+      "category": "public.app-category.utilities",
+      "target": "dmg",
+      "extendInfo": {
+        "LSUIElement": 1
+      }
     }
   }
 }
