@@ -15,7 +15,7 @@
     "electron:builder": "electron-builder",
     "build:for:electron": "cross-env ELECTRON=true vite build",
     "app:build": "yarn build:for:electron && yarn electron:builder",
-    "build:for:github:ci": "yarn app:build --publish always"
+    "build:for:github:ci": "yarn app:build"
   },
   "devDependencies": {
     "concurrently": "^7.0.0",
