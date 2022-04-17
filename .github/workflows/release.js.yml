@@ -1,7 +1,10 @@
 
 name: Release Application
 
-on: push
+on:
+  tag:
+    types: [created]
+
 
 jobs:
   release:
@@ -10,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [windows-latest]
+        os: [macos-latest, ubuntu-latest, windows-latest]
 
     steps:
       - name: Checkout Tag
