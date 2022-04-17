@@ -1,5 +1,12 @@
 # Cursor Highlight
 
+[![License](https://img.shields.io/github/license/Hazyzh/cursor-highlight)](https://github.com/Hazyzh/cursor-highlight)
+[![Release](https://img.shields.io/github/v/release/Hazyzh/cursor-highlight.svg)](https://github.com/Hazyzh/cursor-highlight/releases)
+[![Issue](https://img.shields.io/github/issues/Hazyzh/cursor-highlight)](https://github.com/Hazyzh/cursor-highlight/issues)
+
+
+
+
 > This is a utility tool let other guys easily focus on your mouse cursor. Especially effective when you share screen in a meeting session.
 
 ![demo picture](./readmeStatic/cursor_highlight_demo.gif)
