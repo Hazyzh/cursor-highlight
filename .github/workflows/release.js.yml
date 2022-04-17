@@ -2,8 +2,9 @@
 name: Release Application
 
 on:
-  tag:
-    types: [created]
+ push:
+  tags:
+    - "v*"
 
 
 jobs:
