@@ -79,13 +79,13 @@ function createTray() {
   hideTaskBar();
   const iconPath = path.join(__dirname, './trayIcon.png');
   const trayIcon = nativeImage.createFromPath(iconPath);
-  tray = new Tray(trayIcon.resize({width: 16}));
+  tray = new Tray(trayIcon.resize({ width: 16 }));
   const contextMenu = Menu.buildFromTemplate([
+    { label: 'About Cursor Highlight', click: () => shell.openExternal('https://github.com/Hazyzh/cursor-highlight')},
+    { type: 'separator'},
     { label: 'Highlight Mode', click: () => createHighlightWindow()},
     { type: 'separator'},
-    { label: 'Help', click: () => shell.openExternal('https://github.com/Hazyzh/cursor-highlight')},
-    { type: 'separator'},
-    { label: 'Quit App', click: () => app.quit() }
+    { label: 'Quit', click: () => app.quit() }
   ]);
   tray.setToolTip('Cursor Highlight');
   tray.setContextMenu(contextMenu);
@@ -102,7 +102,14 @@ app.whenReady().then(() => {
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createHighlightWindow()
   })
-  globalShortcut.register('Alt+x', () => createHighlightWindow());
+  globalShortcut.register('Alt+x', () => {
+    if (highlightWindow) {
+      highlightWindow.close();
+      highlightWindow = null;
+    } else {
+      createHighlightWindow()
+    }
+  });
   globalShortcut.register('Esc', () => {
     if (highlightWindow) {
       highlightWindow.close();
