@@ -2,9 +2,6 @@
 
 > This is a utility tool let other guys easily focus on your mouse cursor. Especially effective when you share screen in a meeting session.
 
----
-### Cursor Highlight
-
 ![demo picture](./readmeStatic/cursor_highlight_demo.gif)
 
 
@@ -25,8 +22,6 @@ Once you install and open it, there will showing a circle shape highlight sectio
 
 MIT license.
 
-Your support is very much appreciated! 🎉
+ 🎉 Your support is very much appreciated! 🎉
 
 - [Star on GitHub](https://github.com/Hazyzh/cursor-highlight/stargazers)
-
-
