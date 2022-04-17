@@ -5,7 +5,9 @@
 ![demo picture](./readmeStatic/cursor_highlight_demo.gif)
 
 
-## Usage
+## Download & Usage
+
+Download from release: https://github.com/Hazyzh/cursor-highlight/releases
 
 Once you install and open it, there will showing a circle shape highlight section on your screen and moving followed your mouse cursor.
 
