@@ -32,3 +32,4 @@ jobs:
         run: yarn build:for:github:ci
         env:
           GH_TOKEN: ${{ secrets.github_token }}
+          ELECTRON_BUILDER_CACHE: ./cache
