@@ -1,4 +1,4 @@
-# mouse-highlight
+# Cursor Highlight
 
 ### What's this?
 
