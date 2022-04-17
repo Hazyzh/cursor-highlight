@@ -1,5 +1,5 @@
 
-name: Release Application
+name: Windows => Release Application
 
 on:
  push:
