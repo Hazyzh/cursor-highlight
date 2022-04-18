@@ -20,7 +20,7 @@ Once you install and open it, there will showing a circle shape highlight sectio
 
 ### Key Control
 
-- **`Escape`(or `Esc` for short)** press will exit the highlight mode.
+- **`Escape`(or `Esc` for short)** press `Esc` will exit the highlight mode.
 - **`Alt+x`** press `Alt` and `x` will toggle highlight mode.
 - **`Left Mouse Button`** keep press left mouse button and moving, will painting on the screen.
 - **`Mouse Wheel`** scrolling mouse wheel will zoom in/out the highlight section area.
