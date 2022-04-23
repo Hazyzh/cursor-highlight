@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, Tray, nativeImage, Menu, shell } = require('electron');
+const { app, BrowserWindow, Tray, nativeImage, Menu, shell, ipcMain } = require('electron');
 const { globalShortcut } = require('electron/main');
 const path = require('path')
 
@@ -110,12 +110,12 @@ app.whenReady().then(() => {
       createHighlightWindow()
     }
   });
-  globalShortcut.register('Esc', () => {
+  ipcMain.on('close-window', () => {
     if (highlightWindow) {
       highlightWindow.close();
       highlightWindow = null;
     }
-  });
+  })
 
   // Quit when all windows are closed, except on macOS. There, it's common
   // for applications and their menu bar to stay active until the user quits

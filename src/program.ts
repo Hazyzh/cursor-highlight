@@ -37,7 +37,6 @@ export class Main {
     this.ctx.canvas.width = this.cWidth;
     this.ctx.canvas.height = this.cHeight
     this.draw();
-    this.initListeners();
   }
 
   private draw = () => {
@@ -48,17 +47,6 @@ export class Main {
     });
     if (this.working) {
       window.requestAnimationFrame(this.draw);
-    }
-  }
-
-  private initListeners() {
-    window.addEventListener('keydown', e => this.checkExit(e))
-  }
-
-  checkExit(e: KeyboardEvent){
-    if (e.code === 'Escape') {
-      this.working = !this.working;
-      if (this.working) this.draw();
     }
   }
 
