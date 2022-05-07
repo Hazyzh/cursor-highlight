@@ -1,7 +1,7 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, Tray, nativeImage, Menu, shell, ipcMain } = require('electron');
 const { globalShortcut } = require('electron/main');
-const path = require('path')
+const path = require('path');
 
 const isDev = process.env.IS_DEV == "true" ? true : false;
 
@@ -9,10 +9,12 @@ let highlightWindow = null;
 // gray mask
 app.disableHardwareAcceleration();
 
-app.setLoginItemSettings({
-  openAtLogin: true,
-  openAsHidden: true,
-})
+if (app.isPackaged) {
+  app.setLoginItemSettings({
+    openAtLogin: true,
+    openAsHidden: true,
+  })
+}
 
 const MacOS = 'darwin';
 const Windows = 'win32';
@@ -95,7 +97,10 @@ function createTray() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-  createHighlightWindow()
+  const { wasOpenedAsHidden } = app.getLoginItemSettings();
+  if (!wasOpenedAsHidden) {
+    createHighlightWindow();
+  }
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
