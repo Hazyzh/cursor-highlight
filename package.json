@@ -1,7 +1,7 @@
 {
   "name": "cursor-highlight",
   "license": "MIT",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "electron/main.js",
   "author": "Harry Hou <hazyzh@qq.com>",
   "description": "This is a utility tool let other guys easily focus on your mouse cursor. Especially effective when you share screen in a meeting session.",
