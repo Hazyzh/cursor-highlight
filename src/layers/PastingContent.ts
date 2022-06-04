@@ -19,11 +19,11 @@ class ImageItem {
   }
 }
 
-export class PastingContent extends BaseLayer{
+export class PastingContent extends BaseLayer {
   private imagesList: ImageItem[] = [];
 
   public init(): void {
-    document.addEventListener('paste', e => {
+    document.addEventListener('paste', (e) => {
       const file = e.clipboardData?.files[0];
       if (!file) return;
 
@@ -37,11 +37,11 @@ export class PastingContent extends BaseLayer{
   draw() {
     // console.log('pasting content');
     const { imagesList, ctx } = this;
-    
-    if (imagesList.filter(({ready}) => ready).length) {
-      imagesList.forEach(item => {
+
+    if (imagesList.filter(({ ready }) => ready).length) {
+      imagesList.forEach((item) => {
         ctx.drawImage(item.img, 0, 0);
-      })
+      });
     }
   }
 }
