@@ -10,9 +10,9 @@ export class PaintingLayer extends BaseLayer {
   private paintingKey = 0;
 
   public init(): void {
-    this.canvas.addEventListener('mousemove', e => this.mouseMove(e));
-    this.canvas.addEventListener('mousedown', e => this.mouseDown(e));
-    this.canvas.addEventListener('mouseup', e => this.mouseUp(e));
+    this.canvas.addEventListener('mousemove', (e) => this.mouseMove(e));
+    this.canvas.addEventListener('mousedown', (e) => this.mouseDown(e));
+    this.canvas.addEventListener('mouseup', (e) => this.mouseUp(e));
   }
 
   public draw() {
@@ -21,14 +21,14 @@ export class PaintingLayer extends BaseLayer {
 
     ctx.strokeStyle = strokeStyle;
     ctx.lineWidth = lineWidth;
-    lines.forEach(line => this.drawLine(line));
+    lines.forEach((line) => this.drawLine(line));
     this.drawLine(activeLines);
   }
 
   mouseMove(e: MouseEvent) {
     if (!this.isDrawing) return;
 
-    const currentPosition = {x: e.offsetX, y: e.offsetY};
+    const currentPosition = { x: e.offsetX, y: e.offsetY };
     this.activeLines.push(currentPosition);
   }
 
@@ -51,15 +51,15 @@ export class PaintingLayer extends BaseLayer {
   }
 
   drawLine(line: IPointPosition[]) {
-    const { ctx } =  this;
+    const { ctx } = this;
     ctx.beginPath();
-    line.forEach(({x, y}, index) => {
+    line.forEach(({ x, y }, index) => {
       if (index === 0) {
         ctx.moveTo(x, y);
       } else {
-       ctx.lineTo(x, y);
+        ctx.lineTo(x, y);
       }
-    })
+    });
     ctx.stroke();
     ctx.closePath();
   }

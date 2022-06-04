@@ -1,4 +1,4 @@
-export interface IBaseLayerProps{
+export interface IBaseLayerProps {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
   cWidth: number;
