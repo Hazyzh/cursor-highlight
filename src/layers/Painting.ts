@@ -1,66 +1,84 @@
+import {
+  BrushColors,
+  BrushEvents,
+} from '../lib';
 import { BaseLayer } from './Base';
-import { IPointPosition } from './Base.interface';
+import {
+  BaseShape,
+  LineShape,
+} from './Shapes';
 
 export class PaintingLayer extends BaseLayer {
-  private strokeStyle = 'red';
+  private strokeStyle = BrushColors.red;
   private lineWidth = 5;
   private isDrawing = false;
-  private lines: IPointPosition[][] = [];
-  private activeLines: IPointPosition[] = [];
   private paintingKey = 0;
 
+  private shapes: BaseShape[] = [];
+  private activeShape?: BaseShape;
+
   public init(): void {
+    this.initEvents();
     this.canvas.addEventListener('mousemove', (e) => this.mouseMove(e));
     this.canvas.addEventListener('mousedown', (e) => this.mouseDown(e));
     this.canvas.addEventListener('mouseup', (e) => this.mouseUp(e));
   }
 
-  public draw() {
-    const { activeLines, lines, ctx, strokeStyle, lineWidth } = this;
-    if (!lines.length && !activeLines.length) return;
+  private initEvents() {
+    this.paletteBoxEmitter.on(BrushEvents.changeShape, (value) =>
+      console.log(value)
+    );
 
-    ctx.strokeStyle = strokeStyle;
-    ctx.lineWidth = lineWidth;
-    lines.forEach((line) => this.drawLine(line));
-    this.drawLine(activeLines);
+    this.paletteBoxEmitter.on(BrushEvents.changeColor, (value: BrushColors) => {
+      this.strokeStyle = value;
+    });
   }
 
-  mouseMove(e: MouseEvent) {
-    if (!this.isDrawing) return;
+  public draw() {
+    const { activeShape, shapes } = this;
+    if (!shapes.length && !activeShape) return;
 
-    const currentPosition = { x: e.offsetX, y: e.offsetY };
-    this.activeLines.push(currentPosition);
+    // ctx.strokeStyle = strokeStyle;
+    // ctx.lineWidth = lineWidth;
+    // lines.forEach((line) => this.drawLine(line));
+    // this.drawLine(activeLines);
+    shapes.forEach((shape) => shape.drawShape());
+    activeShape?.drawShape();
   }
 
   mouseDown(e: MouseEvent) {
     if (e.button !== this.paintingKey) return;
 
     this.isDrawing = true;
-    if (this.activeLines.length > 1) {
-      this.lines.push(this.activeLines);
-    }
+    const currentPosition = this.getPointFromEvent(e);
+    this.activeShape = new LineShape({
+      startPoint: currentPosition,
+      ctx: this.ctx,
+      strokeStyle: this.strokeStyle,
+      lineWidth: this.lineWidth,
+    });
+  }
 
-    this.activeLines = [];
+  mouseMove(e: MouseEvent) {
+    if (!this.isDrawing) return;
+
+    const currentPosition = this.getPointFromEvent(e);
+    this.activeShape?.mouseMove(currentPosition);
   }
 
   mouseUp(e: MouseEvent) {
     if (e.button !== this.paintingKey) return;
 
     this.isDrawing = false;
-    // this.lines = [];
+    if (this.activeShape) {
+      const currentPosition = this.getPointFromEvent(e);
+      this.activeShape?.finishShape(currentPosition);
+      this.shapes.push(this.activeShape!);
+      this.activeShape = undefined;
+    }
   }
 
-  drawLine(line: IPointPosition[]) {
-    const { ctx } = this;
-    ctx.beginPath();
-    line.forEach(({ x, y }, index) => {
-      if (index === 0) {
-        ctx.moveTo(x, y);
-      } else {
-        ctx.lineTo(x, y);
-      }
-    });
-    ctx.stroke();
-    ctx.closePath();
+  getPointFromEvent(e: MouseEvent) {
+    return { x: e.offsetX, y: e.offsetY };
   }
 }

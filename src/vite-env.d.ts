@@ -2,4 +2,5 @@
 
 interface Window {
   app: any;
-} 
+  paletteBox: any;
+}

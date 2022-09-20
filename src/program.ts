@@ -4,13 +4,12 @@ import {
   PaintingLayer,
   PastingContent,
 } from './layers';
-
-interface IMainParams {
-  canvas: HTMLCanvasElement;
-}
+import { IMainProps } from './program.interface';
 
 export class Main {
-  private canvas: HTMLCanvasElement;
+  private canvas: IMainProps['canvas'];
+  private paletteBoxEmitter: IMainProps['paletteBoxEmitter'];
+
   private ctx: CanvasRenderingContext2D;
   private cWidth: number;
   private cHeight: number;
@@ -19,16 +18,21 @@ export class Main {
   private layers: BaseLayer[];
   private working: boolean = false;
 
-  constructor({
-    canvas
-  }: IMainParams) {
+  constructor({ canvas, paletteBoxEmitter }: IMainProps) {
     this.canvas = canvas;
+    this.paletteBoxEmitter = paletteBoxEmitter;
     this.ctx = this.canvas.getContext('2d')!;
     this.cHeight = window.innerHeight;
     this.cWidth = window.innerWidth;
     this.layers = this.layersClasses.map(
       (LayerClass) =>
-        new LayerClass({ canvas: this.canvas, ctx: this.ctx, cHeight: this.cHeight, cWidth: this.cWidth })
+        new LayerClass({
+          canvas: this.canvas,
+          ctx: this.ctx,
+          cHeight: this.cHeight,
+          cWidth: this.cWidth,
+          paletteBoxEmitter: this.paletteBoxEmitter,
+        })
     );
   }
 
@@ -40,7 +44,7 @@ export class Main {
   }
 
   private draw = () => {
-    this.layers.forEach(layer => {
+    this.layers.forEach((layer) => {
       this.ctx.save();
       layer.draw();
       this.ctx.restore();
@@ -56,6 +60,9 @@ export class Main {
   }
 
   get renderLayers() {
-    return this.layers.reduce((pre, item) => ({ ...pre, [item.constructor.name.toLowerCase()]: item }), {});
+    return this.layers.reduce(
+      (pre, item) => ({ ...pre, [item.constructor.name.toLowerCase()]: item }),
+      {}
+    );
   }
 }
