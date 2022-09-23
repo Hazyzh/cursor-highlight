@@ -1,15 +1,24 @@
 import {
   BrushColors,
   BrushEvents,
+  BrushShapes,
 } from '../lib';
 import { BaseLayer } from './Base';
 import {
   BaseShape,
   LineShape,
+  RectangleShape,
 } from './Shapes';
+
+const ShapesMap = {
+  [BrushShapes.pen]: RectangleShape,
+  [BrushShapes.circle]: LineShape,
+  [BrushShapes.rectangle]: LineShape,
+};
 
 export class PaintingLayer extends BaseLayer {
   private strokeStyle = BrushColors.red;
+  private strokeShape: BrushShapes = BrushShapes.pen;
   private lineWidth = 5;
   private isDrawing = false;
   private paintingKey = 0;
@@ -38,10 +47,6 @@ export class PaintingLayer extends BaseLayer {
     const { activeShape, shapes } = this;
     if (!shapes.length && !activeShape) return;
 
-    // ctx.strokeStyle = strokeStyle;
-    // ctx.lineWidth = lineWidth;
-    // lines.forEach((line) => this.drawLine(line));
-    // this.drawLine(activeLines);
     shapes.forEach((shape) => shape.drawShape());
     activeShape?.drawShape();
   }
@@ -51,7 +56,8 @@ export class PaintingLayer extends BaseLayer {
 
     this.isDrawing = true;
     const currentPosition = this.getPointFromEvent(e);
-    this.activeShape = new LineShape({
+    const ShapeClass = ShapesMap[this.strokeShape];
+    this.activeShape = new ShapeClass({
       startPoint: currentPosition,
       ctx: this.ctx,
       strokeStyle: this.strokeStyle,
@@ -72,8 +78,8 @@ export class PaintingLayer extends BaseLayer {
     this.isDrawing = false;
     if (this.activeShape) {
       const currentPosition = this.getPointFromEvent(e);
-      this.activeShape?.finishShape(currentPosition);
-      this.shapes.push(this.activeShape!);
+      const shapeItem = this.activeShape?.finishShape(currentPosition);
+      shapeItem && this.shapes.push(shapeItem);
       this.activeShape = undefined;
     }
   }

@@ -11,10 +11,11 @@ export class LineShape extends BaseShape {
     this.line.push(position);
   }
 
-  public finishShape(position: IPointPosition): void {
+  public finishShape(position: IPointPosition) {
     if (!this.line) return;
 
     this.line.push(position);
+    return this;
   }
 
   public drawShape(): void {

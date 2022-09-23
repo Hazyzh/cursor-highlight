@@ -15,6 +15,6 @@ export abstract class BaseShape {
   }
 
   public abstract mouseMove(position: IPointPosition): void;
-  public abstract finishShape(position: IPointPosition): void;
+  public abstract finishShape(position: IPointPosition): undefined | BaseShape;
   public abstract drawShape(): void;
 }
