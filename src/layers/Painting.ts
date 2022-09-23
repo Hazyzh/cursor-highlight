@@ -6,14 +6,15 @@ import {
 import { BaseLayer } from './Base';
 import {
   BaseShape,
+  CircleShape,
   LineShape,
   RectangleShape,
 } from './Shapes';
 
 const ShapesMap = {
-  [BrushShapes.pen]: RectangleShape,
-  [BrushShapes.circle]: LineShape,
-  [BrushShapes.rectangle]: LineShape,
+  [BrushShapes.pen]: LineShape,
+  [BrushShapes.circle]: CircleShape,
+  [BrushShapes.rectangle]: RectangleShape,
 };
 
 export class PaintingLayer extends BaseLayer {
@@ -34,9 +35,9 @@ export class PaintingLayer extends BaseLayer {
   }
 
   private initEvents() {
-    this.paletteBoxEmitter.on(BrushEvents.changeShape, (value) =>
-      console.log(value)
-    );
+    this.paletteBoxEmitter.on(BrushEvents.changeShape, (value: BrushShapes) => {
+      this.strokeShape = value;
+    });
 
     this.paletteBoxEmitter.on(BrushEvents.changeColor, (value: BrushColors) => {
       this.strokeStyle = value;
