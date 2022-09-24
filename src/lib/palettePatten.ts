@@ -12,5 +12,5 @@ export enum BrushShapes {
 export enum BrushColors {
   red = 'red',
   yellow = 'yellow',
-  black = 'black',
+  gray = 'gray',
 }

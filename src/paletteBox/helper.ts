@@ -5,12 +5,12 @@ import {
 
 const ColorSelectRed = 'brushColorRed';
 const ColorSelectYellow = 'brushColorYellow';
-const ColorSelectBlack = 'brushColorBlack';
+const ColorSelectGray = 'brushColorGray';
 
 export const colorBoxes = [
   { token: BrushColors.red, id: ColorSelectRed },
   { token: BrushColors.yellow, id: ColorSelectYellow },
-  { token: BrushColors.black, id: ColorSelectBlack },
+  { token: BrushColors.gray, id: ColorSelectGray },
 ];
 
 const ShapeSelectPen = 'brushShapePen';

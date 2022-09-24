@@ -35,4 +35,23 @@ export class LineShape extends BaseShape {
     ctx.stroke();
     ctx.closePath();
   }
+
+  protected drawAuxiliaryShape(): void {
+    if (!this.line) return;
+
+    const { ctx } = this;
+    ctx.beginPath();
+    ctx.strokeStyle = this.auxiliaryStrokeStyle;
+    ctx.lineWidth = this.auxiliaryLineWidth;
+
+    this.line.forEach(({ x, y }, index) => {
+      if (index === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
+      }
+    });
+    ctx.stroke();
+    ctx.closePath();
+  }
 }

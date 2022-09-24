@@ -1,8 +1,8 @@
 import { IPointPosition } from '../Base.interface';
-import { BaseShape } from './BaseShape';
+import { RectAuxiliaryShape } from './RectAuxiliaryShape';
 
-export class RectangleShape extends BaseShape {
-  private endPoint?: IPointPosition;
+export class RectangleShape extends RectAuxiliaryShape {
+  protected visibleAuxiliaryPath: boolean = false;
 
   public mouseMove(position: IPointPosition) {
     this.endPoint = position;
@@ -22,7 +22,12 @@ export class RectangleShape extends BaseShape {
     ctx.beginPath();
     ctx.strokeStyle = this.strokeStyle;
     ctx.lineWidth = this.lineWidth;
-    ctx.rect(startPoint.x, startPoint.y, endPoint.x - startPoint.x, endPoint.y - startPoint.y);
+    ctx.rect(
+      startPoint.x,
+      startPoint.y,
+      endPoint.x - startPoint.x,
+      endPoint.y - startPoint.y
+    );
     ctx.stroke();
     ctx.closePath();
   }

@@ -19,7 +19,7 @@ const ShapesMap = {
 
 export class PaintingLayer extends BaseLayer {
   private strokeStyle = BrushColors.red;
-  private strokeShape: BrushShapes = BrushShapes.pen;
+  private strokeShape: BrushShapes = BrushShapes.circle;
   private lineWidth = 5;
   private isDrawing = false;
   private paintingKey = 0;
@@ -49,7 +49,7 @@ export class PaintingLayer extends BaseLayer {
     if (!shapes.length && !activeShape) return;
 
     shapes.forEach((shape) => shape.drawShape());
-    activeShape?.drawShape();
+    activeShape?.drawActiveShape();
   }
 
   mouseDown(e: MouseEvent) {
