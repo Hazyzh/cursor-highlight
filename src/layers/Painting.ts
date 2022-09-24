@@ -32,6 +32,7 @@ export class PaintingLayer extends BaseLayer {
     this.canvas.addEventListener('mousemove', (e) => this.mouseMove(e));
     this.canvas.addEventListener('mousedown', (e) => this.mouseDown(e));
     this.canvas.addEventListener('mouseup', (e) => this.mouseUp(e));
+    this.canvas.addEventListener('keydown', (e) => this.keydown(e));
   }
 
   private initEvents() {
@@ -92,6 +93,13 @@ export class PaintingLayer extends BaseLayer {
       const shapeItem = this.activeShape.finishDraw(currentPosition);
       shapeItem && this.shapesSet.add(shapeItem);
       this.activeShape = putActive ? shapeItem : undefined;
+    }
+  }
+
+  keydown(e: KeyboardEvent) {
+    if (this.activeShape && e.key === 'Backspace') {
+      this.shapesSet.delete(this.activeShape);
+      this.activeShape = undefined;
     }
   }
 
