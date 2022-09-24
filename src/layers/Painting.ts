@@ -19,12 +19,12 @@ const ShapesMap = {
 
 export class PaintingLayer extends BaseLayer {
   private strokeStyle = BrushColors.red;
-  private strokeShape: BrushShapes = BrushShapes.circle;
+  private strokeShape: BrushShapes = BrushShapes.pen;
   private lineWidth = 5;
   private isDrawing = false;
   private paintingKey = 0;
 
-  private shapes: BaseShape[] = [];
+  private shapesSet: Set<BaseShape> = new Set();
   private activeShape?: BaseShape;
 
   public init(): void {
@@ -54,9 +54,18 @@ export class PaintingLayer extends BaseLayer {
 
   mouseDown(e: MouseEvent) {
     if (e.button !== this.paintingKey) return;
-
     this.isDrawing = true;
+
     const currentPosition = this.getPointFromEvent(e);
+    for (const shape of this.shapes) {
+      console.log(shape.checkIsTapStroke(currentPosition));
+      if (shape.checkIsTapStroke(currentPosition)) {
+        shape.setModifyStartPoint(currentPosition);
+        this.activeShape = shape;
+        return;
+      }
+    }
+
     const ShapeClass = ShapesMap[this.strokeShape];
     this.activeShape = new ShapeClass({
       startPoint: currentPosition,
@@ -70,7 +79,7 @@ export class PaintingLayer extends BaseLayer {
     if (!this.isDrawing) return;
 
     const currentPosition = this.getPointFromEvent(e);
-    this.activeShape?.mouseMove(currentPosition);
+    this.activeShape?.onMouseMove(currentPosition);
   }
 
   mouseUp(e: MouseEvent) {
@@ -78,14 +87,19 @@ export class PaintingLayer extends BaseLayer {
 
     this.isDrawing = false;
     if (this.activeShape) {
+      const putActive = this.activeShape.modifying;
       const currentPosition = this.getPointFromEvent(e);
-      const shapeItem = this.activeShape?.finishShape(currentPosition);
-      shapeItem && this.shapes.push(shapeItem);
-      this.activeShape = undefined;
+      const shapeItem = this.activeShape.finishDraw(currentPosition);
+      shapeItem && this.shapesSet.add(shapeItem);
+      this.activeShape = putActive ? shapeItem : undefined;
     }
   }
 
   getPointFromEvent(e: MouseEvent) {
     return { x: e.offsetX, y: e.offsetY };
+  }
+
+  private get shapes() {
+    return [...this.shapesSet];
   }
 }

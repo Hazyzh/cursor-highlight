@@ -4,11 +4,11 @@ import { RectAuxiliaryShape } from './RectAuxiliaryShape';
 export class RectangleShape extends RectAuxiliaryShape {
   protected visibleAuxiliaryPath: boolean = false;
 
-  public mouseMove(position: IPointPosition) {
+  protected mouseMove(position: IPointPosition) {
     this.endPoint = position;
   }
 
-  public finishShape(position: IPointPosition) {
+  protected finishShape(position: IPointPosition) {
     if (!this.endPoint) return;
 
     this.endPoint = position;

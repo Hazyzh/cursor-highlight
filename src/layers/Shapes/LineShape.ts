@@ -2,19 +2,23 @@ import { IPointPosition } from '../Base.interface';
 import { BaseShape } from './BaseShape';
 
 export class LineShape extends BaseShape {
-  private line?: IPointPosition[];
+  private initialLine?: IPointPosition[];
+  private currentPath!: Path2D;
 
-  public mouseMove(position: IPointPosition) {
-    if (!this.line) {
-      this.line = [this.startPoint];
+  protected mouseMove(position: IPointPosition) {
+    if (!this.initialLine) {
+      this.initialLine = [this.startPoint];
     }
-    this.line.push(position);
+    this.initialLine.push(position);
   }
 
-  public finishShape(position: IPointPosition) {
-    if (!this.line) return;
-
-    this.line.push(position);
+  protected finishShape(position: IPointPosition) {
+    if (!this.initialLine) return;
+    if (this.modifying) {
+      this.initialLine = this.modifyingLine;
+    } else {
+      this.initialLine.push(position);
+    }
     return this;
   }
 
@@ -22,18 +26,19 @@ export class LineShape extends BaseShape {
     if (!this.line) return;
 
     const { ctx } = this;
-    ctx.beginPath();
-    ctx.strokeStyle = this.strokeStyle;
+
+    const currentPath = new Path2D();
     ctx.lineWidth = this.lineWidth;
+    ctx.strokeStyle = this.strokeStyle;
     this.line.forEach(({ x, y }, index) => {
       if (index === 0) {
-        ctx.moveTo(x, y);
+        currentPath.moveTo(x, y);
       } else {
-        ctx.lineTo(x, y);
+        currentPath.lineTo(x, y);
       }
     });
-    ctx.stroke();
-    ctx.closePath();
+    ctx.stroke(currentPath);
+    this.currentPath = currentPath;
   }
 
   protected drawAuxiliaryShape(): void {
@@ -53,5 +58,22 @@ export class LineShape extends BaseShape {
     });
     ctx.stroke();
     ctx.closePath();
+  }
+
+  public checkIsTapStroke({ x, y }: IPointPosition): boolean {
+    this.ctx.lineWidth = this.lineWidth;
+    return this.ctx.isPointInStroke(this.currentPath, x, y);
+  }
+
+  private get modifyingLine() {
+    const { initialLine, modifyingOffset } = this;
+    return initialLine?.map(({ x, y }) => ({
+      x: x + modifyingOffset.x,
+      y: y + modifyingOffset.y,
+    }));
+  }
+
+  private get line() {
+    return this.modifying ? this.modifyingLine : this.initialLine;
   }
 }
