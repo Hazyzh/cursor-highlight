@@ -31,6 +31,7 @@ const initialOffsetRateList: RectOffsetRateList = [1, 1, 1, 1];
 export abstract class RectAuxiliaryShape extends BaseShape {
   protected abstract visibleAuxiliaryPath: boolean;
   protected auxiliaryFillStyleActive = 'green';
+  protected auxiliaryStrokeStyleActive = '#52dcbc';
   private offsetRateList: RectOffsetRateList = initialOffsetRateList;
 
   protected endPoint!: IPointPosition;
@@ -86,7 +87,6 @@ export abstract class RectAuxiliaryShape extends BaseShape {
 
     if (!endPoint) return;
 
-    ctx.strokeStyle = this.auxiliaryStrokeStyle;
     ctx.lineWidth = this.auxiliaryLineWidth;
 
     const points = this.getAuxiliaryArcCenters();
@@ -95,6 +95,9 @@ export abstract class RectAuxiliaryShape extends BaseShape {
       const { centerPoint } = auxiliaryPoint;
       currentPath.arc(centerPoint.x, centerPoint.y, 5, 0, 2 * Math.PI);
       auxiliaryPoint.setCurrentPath(currentPath);
+      ctx.strokeStyle = auxiliaryPoint.active
+        ? this.auxiliaryStrokeStyleActive
+        : this.auxiliaryStrokeStyle;
 
       ctx.fillStyle = auxiliaryPoint.active
         ? this.auxiliaryFillStyleActive
@@ -105,6 +108,7 @@ export abstract class RectAuxiliaryShape extends BaseShape {
     });
 
     if (this.visibleAuxiliaryPath) {
+      ctx.strokeStyle = this.auxiliaryStrokeStyle;
       ctx.beginPath();
       ctx.rect(
         startPoint.x,

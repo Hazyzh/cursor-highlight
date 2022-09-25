@@ -1,6 +1,7 @@
 import {
   BrushColors,
   BrushShapes,
+  BrushSizes,
 } from '../lib';
 
 const ColorSelectRed = 'brushColorRed';
@@ -21,4 +22,14 @@ export const shapeBoxes = [
   { token: BrushShapes.pen, id: ShapeSelectPen },
   { token: BrushShapes.circle, id: ShapeSelectCircle },
   { token: BrushShapes.rectangle, id: ShapeSelectRectangle },
+];
+
+const ShapeSizeThin = 'brushShapeSizeThin';
+const ShapeSizeMedium = 'brushShapeSizeMedium';
+const ShapeSizeThick = 'brushShapeSizeThick';
+
+export const shapeSizes = [
+  { token: BrushSizes.thin, id: ShapeSizeThin },
+  { token: BrushSizes.medium, id: ShapeSizeMedium },
+  { token: BrushSizes.thick, id: ShapeSizeThick },
 ];

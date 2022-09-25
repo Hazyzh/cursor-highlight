@@ -2,6 +2,7 @@ import {
   BrushColors,
   BrushEvents,
   BrushShapes,
+  BrushSizes,
 } from '../lib';
 import { BaseLayer } from './Base';
 import {
@@ -19,8 +20,8 @@ const ShapesMap = {
 
 export class PaintingLayer extends BaseLayer {
   private strokeStyle = BrushColors.red;
-  private strokeShape: BrushShapes = BrushShapes.rectangle;
-  private lineWidth = 5;
+  private strokeShape: BrushShapes = BrushShapes.pen;
+  private lineWidth: BrushSizes = BrushSizes.medium;
   private isDrawing = false;
   private paintingKey = 0;
 
@@ -42,6 +43,10 @@ export class PaintingLayer extends BaseLayer {
 
     this.paletteBoxEmitter.on(BrushEvents.changeColor, (value: BrushColors) => {
       this.strokeStyle = value;
+    });
+
+    this.paletteBoxEmitter.on(BrushEvents.changeSize, (value: BrushSizes) => {
+      this.lineWidth = value;
     });
   }
 
@@ -91,7 +96,10 @@ export class PaintingLayer extends BaseLayer {
       const putActive = this.activeShape.modifying;
       const currentPosition = this.getPointFromEvent(e);
       const shapeItem = this.activeShape.finishDraw(currentPosition);
-      shapeItem && this.shapesSet.add(shapeItem);
+      if (shapeItem) {
+        this.shapesSet.delete(shapeItem);
+        this.shapesSet.add(shapeItem);
+      }
       this.activeShape = putActive ? shapeItem : undefined;
     }
   }

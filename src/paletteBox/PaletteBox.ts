@@ -4,16 +4,19 @@ import { BrushEvents } from '../lib';
 import {
   colorBoxes,
   shapeBoxes,
+  shapeSizes,
 } from './helper';
 import {
   TypeColorElements,
   TypeShapeElements,
+  TypeSizeElements,
 } from './PaletteBox.interface';
 
 export class PaletteBox {
   private _eventEmitter = new EventEmitter();
   private _colorElements: TypeColorElements = {};
   private _shapesElements: TypeShapeElements = {};
+  private _sizesElements: TypeSizeElements = {};
 
   constructor() {
     this.init();
@@ -34,8 +37,14 @@ export class PaletteBox {
     shapeBoxes.forEach(({ token, id }) => {
       this._shapesElements[token] = document.getElementById(id)!;
       this._shapesElements[token]?.addEventListener('click', () => {
-        console.log('ok', token);
         this._eventEmitter.emit(BrushEvents.changeShape, token);
+      });
+    });
+
+    shapeSizes.forEach(({ token, id }) => {
+      this._sizesElements[token] = document.getElementById(id)!;
+      this._sizesElements[token]?.addEventListener('click', () => {
+        this._eventEmitter.emit(BrushEvents.changeSize, token);
       });
     });
   }
