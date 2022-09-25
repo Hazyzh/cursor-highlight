@@ -1,22 +1,10 @@
-import { IPointPosition } from '../Base.interface';
 import { RectAuxiliaryShape } from './RectAuxiliaryShape';
 
 export class CircleShape extends RectAuxiliaryShape {
   protected visibleAuxiliaryPath: boolean = true;
 
-  protected mouseMove(position: IPointPosition) {
-    this.endPoint = position;
-  }
-
-  protected finishShape(position: IPointPosition) {
-    if (!this.endPoint) return;
-
-    this.endPoint = position;
-    return this;
-  }
-
   public drawShape(): void {
-    const { ctx, endPoint, startPoint } = this;
+    const { ctx, computedPoints: { startPoint, endPoint }, } = this;
     if (!endPoint) return;
 
     const { x: startX, y: startY } = startPoint;
@@ -25,10 +13,12 @@ export class CircleShape extends RectAuxiliaryShape {
     const radiusX = Math.abs(endX - startX) / 2;
     const radiusY = Math.abs(endY - startY) / 2;
     ctx.beginPath();
+    const currentPath = new Path2D();
+
     ctx.strokeStyle = this.strokeStyle;
     ctx.lineWidth = this.lineWidth;
-    ctx.ellipse(this.middleXOrdinate, this.middleYOrdinate, radiusX, radiusY, 0, 0, 2 * Math.PI);
-    ctx.stroke();
-    ctx.closePath();
+    currentPath.ellipse(this.middleXOrdinate, this.middleYOrdinate, radiusX, radiusY, 0, 0, 2 * Math.PI);
+    ctx.stroke(currentPath);
+    this.currentPath = currentPath;
   }
 }

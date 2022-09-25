@@ -3,7 +3,6 @@ import { BaseShape } from './BaseShape';
 
 export class LineShape extends BaseShape {
   private initialLine?: IPointPosition[];
-  private currentPath!: Path2D;
 
   protected mouseMove(position: IPointPosition) {
     if (!this.initialLine) {
@@ -58,11 +57,6 @@ export class LineShape extends BaseShape {
     });
     ctx.stroke();
     ctx.closePath();
-  }
-
-  public checkIsTapStroke({ x, y }: IPointPosition): boolean {
-    this.ctx.lineWidth = this.lineWidth;
-    return this.ctx.isPointInStroke(this.currentPath, x, y);
   }
 
   private get modifyingLine() {

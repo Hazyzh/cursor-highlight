@@ -15,6 +15,7 @@ export abstract class BaseShape {
 
   protected modifyStartPoint?: IPointPosition;
   protected modifyingOffset = initOffset;
+  protected currentPath!: Path2D;
 
   constructor({ startPoint, ctx, lineWidth, strokeStyle }: IBaseShapeProps) {
     this.startPoint = startPoint;
@@ -60,5 +61,8 @@ export abstract class BaseShape {
     this.drawAuxiliaryShape();
   }
 
-  public abstract checkIsTapStroke(position: IPointPosition): boolean;
+  public checkIsTapStroke({ x, y }: IPointPosition): boolean {
+    this.ctx.lineWidth = this.lineWidth;
+    return this.ctx.isPointInStroke(this.currentPath, x, y);
+  }
 }
