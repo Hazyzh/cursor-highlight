@@ -12,7 +12,6 @@ export abstract class ArrowAuxiliaryShape extends PointAuxiliaryBase {
     if (!endPoint) return;
 
     const pointsList = [
-      // horizontal start line
       startPoint,
       endPoint,
     ];
