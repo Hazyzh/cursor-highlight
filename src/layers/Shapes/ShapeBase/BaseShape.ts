@@ -1,4 +1,4 @@
-import { IPointPosition } from '../Base.interface';
+import { IPointPosition } from '../../Base.interface';
 import { IBaseShapeProps } from './BaseShape.interface';
 
 const initOffset = { x: 0, y: 0 };

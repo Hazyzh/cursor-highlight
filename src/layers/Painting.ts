@@ -6,6 +6,7 @@ import {
 } from '../lib';
 import { BaseLayer } from './Base';
 import {
+  ArrowShape,
   BaseShape,
   CircleShape,
   LineShape,
@@ -16,11 +17,12 @@ const ShapesMap = {
   [BrushShapes.pen]: LineShape,
   [BrushShapes.circle]: CircleShape,
   [BrushShapes.rectangle]: RectangleShape,
+  [BrushShapes.arrow]: ArrowShape,
 };
 
 export class PaintingLayer extends BaseLayer {
   private strokeStyle = BrushColors.red;
-  private strokeShape: BrushShapes = BrushShapes.pen;
+  private strokeShape: BrushShapes = BrushShapes.arrow;
   private lineWidth: BrushSizes = BrushSizes.medium;
   private isDrawing = false;
   private paintingKey = 0;

@@ -8,6 +8,7 @@ export enum BrushShapes {
   pen = 'pen',
   circle = 'circle',
   rectangle = 'rectangle',
+  arrow = 'arrow',
 }
 
 export enum BrushColors {
@@ -17,9 +18,6 @@ export enum BrushColors {
 }
 
 export enum BrushSizes {
-  // thin = 'thin',
-  // medium = 'medium',
-  // thick = 'thick',
   thin = 4,
   medium = 8,
   thick = 12,

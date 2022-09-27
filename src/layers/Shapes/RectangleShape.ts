@@ -1,4 +1,4 @@
-import { RectAuxiliaryShape } from './RectAuxiliaryShape';
+import { RectAuxiliaryShape } from './AuxiliaryBase';
 
 export class RectangleShape extends RectAuxiliaryShape {
   protected visibleAuxiliaryPath: boolean = false;

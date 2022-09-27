@@ -1,5 +1,5 @@
 import { IPointPosition } from '../Base.interface';
-import { BaseShape } from './BaseShape';
+import { BaseShape } from './ShapeBase/BaseShape';
 
 export class LineShape extends BaseShape {
   private initialLine?: IPointPosition[];

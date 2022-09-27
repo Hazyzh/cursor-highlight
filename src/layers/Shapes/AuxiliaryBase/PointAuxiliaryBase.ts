@@ -1,83 +1,20 @@
-import { IPointPosition } from '../Base.interface';
-import { BaseShape } from './BaseShape';
+import { IPointPosition } from '../../Base.interface';
+import { BaseShape } from '../ShapeBase/BaseShape';
+import {
+  AuxiliaryPoint,
+  initialOffsetRateList,
+  RectOffsetRateList,
+} from './lib';
 
-type OffsetRate = 0 | 1;
-type RectOffsetRateList = [OffsetRate, OffsetRate, OffsetRate, OffsetRate];
-
-class RectAuxiliaryPoint {
-  public currentPath!: Path2D;
-  public centerPoint!: IPointPosition;
-  public offsetRateList: RectOffsetRateList;
-  public active = false;
-
-  constructor({ offsetRateList }: { offsetRateList: RectOffsetRateList }) {
-    this.offsetRateList = offsetRateList;
-  }
-
-  public setCenterPoint(position: IPointPosition) {
-    this.centerPoint = position;
-  }
-
-  public setCurrentPath(currentPath: Path2D) {
-    this.currentPath = currentPath;
-  }
-
-  public setActive(isActive: boolean) {
-    this.active = isActive;
-  }
-}
-
-const initialOffsetRateList: RectOffsetRateList = [1, 1, 1, 1];
-export abstract class RectAuxiliaryShape extends BaseShape {
+export abstract class PointAuxiliaryBase extends BaseShape {
   protected abstract visibleAuxiliaryPath: boolean;
   protected auxiliaryFillStyleActive = 'green';
   protected auxiliaryStrokeStyleActive = '#52dcbc';
   private offsetRateList: RectOffsetRateList = initialOffsetRateList;
-
+  protected abstract auxiliaryArcPoints: AuxiliaryPoint[];
   protected endPoint!: IPointPosition;
-  private auxiliaryArcPoints = [
-    // horizontal start line
-    new RectAuxiliaryPoint({ offsetRateList: [1, 1, 0, 0] }),
-    new RectAuxiliaryPoint({ offsetRateList: [0, 1, 0, 0] }),
-    new RectAuxiliaryPoint({ offsetRateList: [0, 1, 1, 0] }),
-    // vertical middle
-    new RectAuxiliaryPoint({ offsetRateList: [1, 0, 0, 0] }),
-    new RectAuxiliaryPoint({ offsetRateList: [0, 0, 1, 0] }),
-    // horizontal end line
-    new RectAuxiliaryPoint({ offsetRateList: [1, 0, 0, 1] }),
-    new RectAuxiliaryPoint({ offsetRateList: [0, 0, 0, 1] }),
-    new RectAuxiliaryPoint({ offsetRateList: [0, 0, 1, 1] }),
-  ];
 
-  protected getAuxiliaryArcCenters() {
-    const { startPoint, endPoint } = this.computedPoints;
-    if (!endPoint) return [];
-
-    const { x: startX, y: startY } = startPoint;
-    const { x: endX, y: endY } = endPoint;
-    const middleX = (startX + endX) / 2;
-    const middleY = (startY + endY) / 2;
-
-    const pointsList = [
-      // horizontal start line
-      startPoint,
-      { x: middleX, y: startY },
-      { x: endX, y: startY },
-      // vertical middle
-      { x: startX, y: middleY },
-      { x: endX, y: middleY },
-      // horizontal end line
-      { x: startX, y: endY },
-      { x: middleX, y: endY },
-      endPoint,
-    ];
-
-    pointsList.forEach((point, index) => {
-      this.auxiliaryArcPoints[index].setCenterPoint(point);
-    });
-
-    return this.auxiliaryArcPoints;
-  }
+  protected abstract setAuxiliaryArcCenters(): void;
 
   protected drawAuxiliaryShape(): void {
     const {
@@ -88,9 +25,8 @@ export abstract class RectAuxiliaryShape extends BaseShape {
     if (!endPoint) return;
 
     ctx.lineWidth = this.auxiliaryLineWidth;
-
-    const points = this.getAuxiliaryArcCenters();
-    points.forEach((auxiliaryPoint) => {
+    this.setAuxiliaryArcCenters();
+    this.auxiliaryArcPoints.forEach((auxiliaryPoint) => {
       const currentPath = new Path2D();
       const { centerPoint } = auxiliaryPoint;
       currentPath.arc(centerPoint.x, centerPoint.y, 5, 0, 2 * Math.PI);
@@ -120,18 +56,6 @@ export abstract class RectAuxiliaryShape extends BaseShape {
       ctx.stroke();
       ctx.closePath();
     }
-  }
-
-  protected get middleXOrdinate() {
-    const { startPoint, endPoint } = this.computedPoints;
-    const middleX = (startPoint.x + endPoint.x) / 2;
-    return middleX;
-  }
-
-  protected get middleYOrdinate() {
-    const { startPoint, endPoint } = this.computedPoints;
-    const middleY = (startPoint.y + endPoint.y) / 2;
-    return middleY;
   }
 
   public checkIsTapStroke({ x, y }: IPointPosition): boolean {
