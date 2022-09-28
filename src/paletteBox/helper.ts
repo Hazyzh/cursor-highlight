@@ -17,11 +17,13 @@ export const colorBoxes = [
 const ShapeSelectPen = 'brushShapePen';
 const ShapeSelectCircle = 'brushShapeCircle';
 const ShapeSelectRectangle = 'brushShapeRectangle';
+const ShapeSelectArrow = 'brushShapeArrow';
 
 export const shapeBoxes = [
   { token: BrushShapes.pen, id: ShapeSelectPen },
   { token: BrushShapes.circle, id: ShapeSelectCircle },
   { token: BrushShapes.rectangle, id: ShapeSelectRectangle },
+  { token: BrushShapes.arrow, id: ShapeSelectArrow },
 ];
 
 const ShapeSizeThin = 'brushShapeSizeThin';

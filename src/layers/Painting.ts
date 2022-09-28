@@ -23,7 +23,7 @@ const ShapesMap = {
 export class PaintingLayer extends BaseLayer {
   private strokeStyle = BrushColors.red;
   private strokeShape: BrushShapes = BrushShapes.arrow;
-  private lineWidth: BrushSizes = BrushSizes.medium;
+  private lineWidth: BrushSizes = BrushSizes.thin;
   private isDrawing = false;
   private paintingKey = 0;
 
