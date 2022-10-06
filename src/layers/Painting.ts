@@ -66,8 +66,7 @@ export class PaintingLayer extends BaseLayer {
 
     const currentPosition = this.getPointFromEvent(e);
     for (const shape of this.shapes) {
-      console.log(shape.checkIsTapStroke(currentPosition));
-      if (shape.checkIsTapStroke(currentPosition)) {
+      if (shape.checkIsTapPath(currentPosition)) {
         shape.setModifyStartPoint(currentPosition);
         this.activeShape = shape;
         return;

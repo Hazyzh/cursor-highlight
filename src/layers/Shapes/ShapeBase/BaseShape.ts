@@ -61,7 +61,11 @@ export abstract class BaseShape {
     this.drawAuxiliaryShape();
   }
 
-  public checkIsTapStroke({ x, y }: IPointPosition): boolean {
+  public checkIsTapPath({ x, y }: IPointPosition): boolean {
+    return this.checkIsTapShape({ x, y });
+  }
+
+  protected checkIsTapShape({ x, y }: IPointPosition): boolean {
     this.ctx.lineWidth = this.lineWidth;
     return this.ctx.isPointInStroke(this.currentPath, x, y);
   }

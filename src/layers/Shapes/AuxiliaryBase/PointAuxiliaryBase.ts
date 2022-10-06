@@ -58,7 +58,7 @@ export abstract class PointAuxiliaryBase extends BaseShape {
     }
   }
 
-  public checkIsTapStroke({ x, y }: IPointPosition): boolean {
+  public checkIsTapPath({ x, y }: IPointPosition): boolean {
     const { ctx } = this;
     for (const item of this.auxiliaryArcPoints) {
       if (ctx.isPointInPath(item.currentPath, x, y)) {
@@ -67,7 +67,7 @@ export abstract class PointAuxiliaryBase extends BaseShape {
         return true;
       }
     }
-    return super.checkIsTapStroke({ x, y });
+    return super.checkIsTapPath({ x, y });
   }
 
   protected finishShape(position: IPointPosition) {
