@@ -3,6 +3,11 @@ import { ArrowAuxiliaryShape } from './AuxiliaryBase';
 
 export class ArrowShape extends ArrowAuxiliaryShape {
   protected visibleAuxiliaryPath: boolean = false;
+  private maxArrowInsidePointOffsetX = 60;
+  private maxArrowOutsidePointOffsetX = 75;
+
+  private maxArrowInsidePointOffsetY = 15;
+  private maxArrowOutsidePointOffsetY = 45;
 
   public drawShape(): void {
     if (!this.endPoint) return;
@@ -11,16 +16,22 @@ export class ArrowShape extends ArrowAuxiliaryShape {
     const { startPoint } = this.computedPoints;
     const { x, y } = startPoint;
 
+    const insidePointOffsetX = Math.max(distance * 0.833, distance - this.maxArrowInsidePointOffsetX);
+    const insidePointOffsetY = Math.min(distance * 0.042, this.maxArrowInsidePointOffsetY);
+
+    const outsidePointOffsetX = Math.max(distance * 0.792, distance - this.maxArrowOutsidePointOffsetX);
+    const outsidePointOffsetY = Math.min(distance * 0.125, this.maxArrowOutsidePointOffsetY);
+
     ctx.save();
     ctx.translate(x, y);
     const arrowOffset = lineWidth / 3;
     const currentPath = new Path2D();
     currentPath.moveTo(arrowOffset, -arrowOffset);
-    currentPath.lineTo(distance * 0.833, -distance * 0.042);
-    currentPath.lineTo(distance * 0.792, -distance * 0.125);
+    currentPath.lineTo(insidePointOffsetX, -insidePointOffsetY);
+    currentPath.lineTo(outsidePointOffsetX, -outsidePointOffsetY);
     currentPath.lineTo(distance, 0);
-    currentPath.lineTo(distance * 0.792, distance * 0.125);
-    currentPath.lineTo(distance * 0.833, distance * 0.042);
+    currentPath.lineTo(outsidePointOffsetX, outsidePointOffsetY);
+    currentPath.lineTo(insidePointOffsetX, insidePointOffsetY);
     currentPath.lineTo(arrowOffset, arrowOffset);
     currentPath.arc(arrowOffset, 0, arrowOffset, 0.5 * Math.PI, 1.5 * Math.PI);
     ctx.rotate(lineSlope);
