@@ -3,6 +3,13 @@ import {
   BrushShapes,
   BrushSizes,
 } from '../lib';
+import arrowIcon from './icons/arrow.png';
+import circleIcon from './icons/circle.png';
+import paletteIcon from './icons/palette.png';
+import pencilIcon from './icons/pencil.png';
+import rectangleIcon from './icons/rectangle.png';
+
+console.log('icon', paletteIcon);
 
 const ColorSelectRed = 'brushColorRed';
 const ColorSelectYellow = 'brushColorYellow';
@@ -35,3 +42,34 @@ export const shapeSizes = [
   { token: BrushSizes.medium, id: ShapeSizeMedium },
   { token: BrushSizes.thick, id: ShapeSizeThick },
 ];
+
+export const getPaletteContentDOM = () => {
+  return `
+    <div class="palette-icon">
+      <img src="${paletteIcon}" />
+    </div>
+    <div class="palette-tools">
+      <div id="${ShapeSelectArrow}" class="shape">
+        <img src="${arrowIcon}" />
+      </div>
+      <div id="${ShapeSelectPen}" class="shape">
+        <img src="${pencilIcon}" />
+      </div>
+      <div id="${ShapeSelectCircle}" class="shape">
+        <img src="${circleIcon}" />
+      </div>
+      <div id="${ShapeSelectRectangle}" class="shape">
+        <img src="${rectangleIcon}" />
+      </div>
+      <p></p>
+      <div id="${ColorSelectRed}" class="red color"></div>
+      <div id="${ColorSelectYellow}" class="yellow color"></div>
+      <div id="${ColorSelectGray}" class="gray color"></div>
+      <p></p>
+      <div id="${ShapeSizeThin}" class="thin size"></div>
+      <div id="${ShapeSizeMedium}" class="medium size"></div>
+      <div id="${ShapeSizeThick}" class="thick size"></div>
+    </div>
+    <div></div>
+  `;
+};
