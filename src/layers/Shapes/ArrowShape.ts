@@ -38,7 +38,6 @@ export class ArrowShape extends ArrowAuxiliaryShape {
     ctx.fillStyle = this.strokeStyle;
     ctx.lineWidth = 1;
     ctx.fill(currentPath);
-    ctx.stroke(currentPath);
     ctx.restore();
     this.currentPath = currentPath;
   }
