@@ -18,6 +18,7 @@ p {
   display: block;
   background: gray;
   border-radius: 50%;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   overflow: hidden;
 }
 
@@ -35,6 +36,7 @@ p {
   padding: 10px;
   cursor: grab;
   border-radius: 15px 0 0 15px;
+  transform: translateY(-50%);
 
   .palette-icon {
     margin: 5px;
@@ -46,23 +48,42 @@ p {
     display: none;
     align-items: center;
     justify-content: center;
-
-    .shape {
-      cursor: pointer;
-      width: 20px;
-      height: 20px;
-    }
-
-    .color {
-      cursor: pointer;
-      width: 16px;
-      height: 26px;
-    }
+    flex-direction: column;
 
     p {
-      width: 0px;
-      height: 26px;
-      border-right: 1px solid silver;
+      width: 50px;
+      height: 3px;
+      margin: 5px 0px;
+      box-shadow: rgba(141, 239, 197, 0.36) 0px 2px 4px 0px inset;
+    }
+
+    .shape-box {
+      display: flex;
+      width: 50px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+
+      .shape {
+        cursor: pointer;
+        width: 16px;
+        height: 16px;
+        margin: 3px;
+      }
+    }
+
+    .color-box {
+      display: flex;
+      width: 50px;
+      justify-content: space-between;
+      
+      .color {
+        cursor: pointer;
+        width: 16px;
+        height: 16px;
+        margin: 1px;
+        box-sizing: border-box;
+        box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+      }
     }
 
     .yellow {
@@ -77,17 +98,22 @@ p {
       background-color: gray;
     }
 
-    div {
-      margin: 5px;
-    }
-
-    .size {
-      cursor: pointer;
-      width: 16px;
-      height: 26px;
+    .size-box {
       display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 50px;
+      justify-content: space-between;
+
+      .size {
+        cursor: pointer;
+        width: 16px;
+        height: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 1px;
+        overflow: hidden;
+
+      }
     }
 
     .thin::after {
@@ -132,4 +158,9 @@ p {
 img {
   width: 100%;
   height: 100%;
+}
+
+.active {
+  box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+  border:solid 1px rgb(4, 174, 18);
 }

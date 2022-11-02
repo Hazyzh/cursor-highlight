@@ -2,6 +2,7 @@ import { EventEmitter } from 'events';
 
 import { BrushEvents } from '../lib';
 import {
+  addActiveClass,
   colorBoxes,
   getPaletteContentDOM,
   shapeBoxes,
@@ -19,10 +20,10 @@ export class PaletteBox {
   private _shapesElements: TypeShapeElements = {};
   private _sizesElements: TypeSizeElements = {};
   private _container: HTMLElement;
-  private _containerInitTopRate = 0.7;
+  private _containerInitTopRate = 0.6;
   private _dragging = false;
   private _dragOffsetY?: number;
-  private _safeSpace = 15;
+  private _safeSpace = 100;
 
   constructor() {
     const container = document.createElement('div');
@@ -73,7 +74,7 @@ export class PaletteBox {
         Math.max(this._safeSpace, currentY),
         this.positionMaxHeight,
       );
-      this._container.style.transform = `translateY(${translateNumber}px)`;
+      this._container.style.top = `${translateNumber}px`;
     });
 
     window.addEventListener('resize', () => {
@@ -88,7 +89,7 @@ export class PaletteBox {
 
   private initializeContainerTranslate() {
     const defaultTranslate = window.innerHeight * this._containerInitTopRate;
-    this._container.style.transform = `translateY(${defaultTranslate}px)`;
+    this._container.style.top = `${defaultTranslate}px`;
   }
 
   private initDomsAndEvents() {
@@ -96,6 +97,7 @@ export class PaletteBox {
       this._colorElements[token] = this._container.querySelector<HTMLElement>(`#${id}`)!;
       this._colorElements[token]?.addEventListener('click', () => {
         this._eventEmitter.emit(BrushEvents.changeColor, token);
+        addActiveClass(this._colorElements, token);
       });
     });
 
@@ -103,6 +105,7 @@ export class PaletteBox {
       this._shapesElements[token] = this._container.querySelector<HTMLElement>(`#${id}`)!;
       this._shapesElements[token]?.addEventListener('click', () => {
         this._eventEmitter.emit(BrushEvents.changeShape, token);
+        addActiveClass(this._shapesElements, token);
       });
     });
 
@@ -110,6 +113,7 @@ export class PaletteBox {
       this._sizesElements[token] = this._container.querySelector<HTMLElement>(`#${id}`)!;
       this._sizesElements[token]?.addEventListener('click', () => {
         this._eventEmitter.emit(BrushEvents.changeSize, token);
+        addActiveClass(this._sizesElements, token);
       });
     });
   }
@@ -130,6 +134,6 @@ export class PaletteBox {
   }
 
   get positionMaxHeight() {
-    return window.innerHeight - this._container.clientHeight - this._safeSpace;
+    return window.innerHeight - this._container.clientHeight / 2 - this._safeSpace;
   }
 }

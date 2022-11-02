@@ -49,27 +49,46 @@ export const getPaletteContentDOM = () => {
       <img src="${paletteIcon}" />
     </div>
     <div class="palette-tools">
-      <div id="${ShapeSelectArrow}" class="shape">
-        <img src="${arrowIcon}" />
+      <div class="shape-box">
+        <div id="${ShapeSelectArrow}" class="shape active">
+          <img src="${arrowIcon}" />
+        </div>
+        <div id="${ShapeSelectPen}" class="shape">
+          <img src="${pencilIcon}" />
+        </div>
+        <div id="${ShapeSelectCircle}" class="shape">
+          <img src="${circleIcon}" />
+        </div>
+        <div id="${ShapeSelectRectangle}" class="shape">
+          <img src="${rectangleIcon}" />
+        </div>
       </div>
-      <div id="${ShapeSelectPen}" class="shape">
-        <img src="${pencilIcon}" />
-      </div>
-      <div id="${ShapeSelectCircle}" class="shape">
-        <img src="${circleIcon}" />
-      </div>
-      <div id="${ShapeSelectRectangle}" class="shape">
-        <img src="${rectangleIcon}" />
-      </div>
+
       <p></p>
-      <div id="${ColorSelectRed}" class="red color"></div>
-      <div id="${ColorSelectYellow}" class="yellow color"></div>
-      <div id="${ColorSelectGray}" class="gray color"></div>
+
+      <div class="color-box">
+        <div id="${ColorSelectRed}" class="red color active"></div>
+        <div id="${ColorSelectYellow}" class="yellow color"></div>
+        <div id="${ColorSelectGray}" class="gray color"></div>
+      </div>
+
       <p></p>
-      <div id="${ShapeSizeThin}" class="thin size"></div>
-      <div id="${ShapeSizeMedium}" class="medium size"></div>
-      <div id="${ShapeSizeThick}" class="thick size"></div>
+
+      <div class="size-box">
+        <div id="${ShapeSizeThin}" class="thin size active"></div>
+        <div id="${ShapeSizeMedium}" class="medium size"></div>
+        <div id="${ShapeSizeThick}" class="thick size"></div>
+      </div>
     </div>
     <div></div>
   `;
+};
+
+export const addActiveClass = <T extends Record<string, HTMLElement>>(elements: T, token: keyof T) => {
+  Object.values(elements).forEach((ele) => {
+    ele.className = ele.className.split(' ').filter(i => i !== 'active').join(' ');
+  });
+
+  const element = elements[token];
+  element.className = [...new Set([...element.className.split(' '), 'active'])].join(' ');
 };
