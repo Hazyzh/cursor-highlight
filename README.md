@@ -27,6 +27,13 @@ Once you install and open it, there will showing a circle shape highlight sectio
 
 > You can also control it by clicking the tray bar icon.
 
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for more information.
+
+MIT license.
+
+
 ## License
 
 MIT license.

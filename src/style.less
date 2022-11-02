@@ -27,13 +27,14 @@ p {
     -webkit-user-drag:none
   }
 
+  opacity: 0.1;
   position: absolute;
   background: greenyellow;
   right: 0px;
   top: 0px;
   padding: 10px;
   cursor: grab;
-  transition: width 0.2s;
+  border-radius: 15px 0 0 15px;
 
   .palette-icon {
     margin: 5px;
@@ -109,6 +110,7 @@ p {
   }
 
   &:hover {
+    opacity: 1;
     .palette-icon { display: none; }
 
     .palette-tools {
@@ -118,6 +120,8 @@ p {
 }
 
 .dragging {
+  opacity: 1;
+
   .palette-icon { display: none; }
 
   .palette-tools {
