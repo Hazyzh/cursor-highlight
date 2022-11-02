@@ -30,8 +30,10 @@ p {
   position: absolute;
   background: greenyellow;
   right: 0px;
-  top: 50%;
+  top: 0px;
   padding: 10px;
+  cursor: grab;
+  transition: width 0.2s;
 
   .palette-icon {
     margin: 5px;
@@ -112,6 +114,14 @@ p {
     .palette-tools {
       display: flex;
     }
+  }
+}
+
+.dragging {
+  .palette-icon { display: none; }
+
+  .palette-tools {
+    display: flex;
   }
 }
 

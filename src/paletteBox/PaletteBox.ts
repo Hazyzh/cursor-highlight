@@ -19,6 +19,10 @@ export class PaletteBox {
   private _shapesElements: TypeShapeElements = {};
   private _sizesElements: TypeSizeElements = {};
   private _container: HTMLElement;
+  private _containerInitTopRate = 0.7;
+  private _dragging = false;
+  private _dragOffsetY?: number;
+  private _safeSpace = 15;
 
   constructor() {
     const container = document.createElement('div');
@@ -45,8 +49,46 @@ export class PaletteBox {
 
   private _appendDOM() {
     this._container.innerHTML = getPaletteContentDOM();
+    this.initializeContainerTranslate();
+    this._container.addEventListener('mousedown', (event) => {
+      this._dragging = true;
+      this._dragOffsetY = event.offsetY;
+    });
+    this._container.addEventListener('mouseup', () => {
+      this._dragging = false;
+      this._renderDraggingClass();
+    });
+
+    window.addEventListener('mousemove', (evt) => {
+      if (!this._dragging) return;
+
+      if (evt.buttons === 0) {
+        this._dragging = false;
+      }
+
+      this._renderDraggingClass();
+
+      const currentY = evt.clientY - this._dragOffsetY!;
+      const translateNumber = Math.min(
+        Math.max(this._safeSpace, currentY),
+        this.positionMaxHeight,
+      );
+      this._container.style.transform = `translateY(${translateNumber}px)`;
+    });
+
+    window.addEventListener('resize', () => {
+      const { y } = this._container.getBoundingClientRect();
+      if (y >= this.positionMaxHeight) {
+        this.initializeContainerTranslate();
+      }
+    });
     this.initDomsAndEvents();
     document.body.appendChild(this._container);
+  }
+
+  private initializeContainerTranslate() {
+    const defaultTranslate = window.innerHeight * this._containerInitTopRate;
+    this._container.style.transform = `translateY(${defaultTranslate}px)`;
   }
 
   private initDomsAndEvents() {
@@ -72,7 +114,22 @@ export class PaletteBox {
     });
   }
 
+  private _renderDraggingClass() {
+    const fixedClass = 'palette-box';
+    const draggingClass = `dragging ${fixedClass}`;
+
+    const classnames = this._dragging ? draggingClass : fixedClass;
+    this._container.setAttribute(
+      'class',
+      classnames,
+    );
+  }
+
   get eventEmitter() {
     return this._eventEmitter;
+  }
+
+  get positionMaxHeight() {
+    return window.innerHeight - this._container.clientHeight - this._safeSpace;
   }
 }
