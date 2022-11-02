@@ -31,9 +31,6 @@ Once you install and open it, there will showing a circle shape highlight sectio
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for more information.
 
-MIT license.
-
-
 ## License
 
 MIT license.
