@@ -21,8 +21,9 @@ export class PaletteBox {
   private _sizesElements: TypeSizeElements = {};
   private _container: HTMLElement;
   private _containerInitTopRate = 0.6;
+  private _lastTop?: number;
   private _dragging = false;
-  private _dragOffsetY?: number;
+  private _dragStartY?: number;
   private _safeSpace = 100;
 
   constructor() {
@@ -53,7 +54,7 @@ export class PaletteBox {
     this.initializeContainerTranslate();
     this._container.addEventListener('mousedown', (event) => {
       this._dragging = true;
-      this._dragOffsetY = event.offsetY;
+      this._dragStartY = event.clientY;
     });
     this._container.addEventListener('mouseup', () => {
       this._dragging = false;
@@ -69,12 +70,13 @@ export class PaletteBox {
 
       this._renderDraggingClass();
 
-      const currentY = evt.clientY - this._dragOffsetY!;
-      const translateNumber = Math.min(
+      const currentY = this._lastTop! + evt.clientY - this._dragStartY!;
+      this._dragStartY = evt.clientY;
+      this._lastTop = Math.min(
         Math.max(this._safeSpace, currentY),
         this.positionMaxHeight,
       );
-      this._container.style.top = `${translateNumber}px`;
+      this._container.style.top = `${this._lastTop}px`;
     });
 
     window.addEventListener('resize', () => {
@@ -88,8 +90,8 @@ export class PaletteBox {
   }
 
   private initializeContainerTranslate() {
-    const defaultTranslate = window.innerHeight * this._containerInitTopRate;
-    this._container.style.top = `${defaultTranslate}px`;
+    this._lastTop = window.innerHeight * this._containerInitTopRate;
+    this._container.style.top = `${this._lastTop}px`;
   }
 
   private initDomsAndEvents() {
